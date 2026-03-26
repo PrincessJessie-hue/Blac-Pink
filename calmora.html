@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calmora — Case Study · Ayanda</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <style>
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --bg:         #0A0A0A;
+      --surface:    #141414;
+      --surface2:   #1C1C1C;
+      --border:     rgba(255, 255, 255, 0.06);
+      --pink:       #E91E63;
+      --pink-glow:  rgba(233, 30, 99, 0.25);
+      --white:      #FFFFFF;
+      --muted:      #AAAAAA;
+      --dim:        #555555;
+      --font:       'Archivo', sans-serif;
+      --max-width:  1200px;
+      --side-pad:   80px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font);
+      cursor: none;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ============================================================
+       CURSOR
+    ============================================================ */
+    #cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--pink);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease;
+    }
+
+    #cursor-ring {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid rgba(233, 30, 99, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.35s ease, height 0.35s ease, border-color 0.3s ease;
+    }
+
+    body.cursor-expanded #cursor      { width: 6px; height: 6px; }
+    body.cursor-expanded #cursor-ring { width: 52px; height: 52px; border-color: var(--pink); }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1.6rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(10, 10, 10, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+    .nav-logo span { color: var(--pink); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .btn-hire {
+      background: var(--pink);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.6rem 1.5rem;
+      border-radius: 99px;
+      border: none;
+      cursor: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .btn-hire:hover { transform: translateY(-3px); box-shadow: 0 10px 24px var(--pink-glow); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: none;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 68px;
+      left: 0;
+      width: 100%;
+      background: rgba(10, 10, 10, 0.97);
+      backdrop-filter: blur(14px);
+      padding: 1.8rem 5%;
+      z-index: 999;
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--side-pad);
+    }
+
+    .section { padding: 80px 0; }
+
+    .section-divider { border: none; border-top: 1px solid var(--border); }
+
+    /* Two column grid */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .two-col.align-top { align-items: start; }
+    .two-col.flipped > *:first-child { order: 2; }
+    .two-col.flipped > *:last-child  { order: 1; }
+
+    /* ============================================================
+       REVEAL ANIMATION
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================================
+       TYPOGRAPHY UTILITIES
+    ============================================================ */
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--pink);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--pink);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .body-text { font-size: 15px; line-height: 1.85; color: var(--muted); }
+    .body-text strong { color: var(--white); font-weight: 600; }
+
+    /* ============================================================
+       IMAGE SLOTS
+       Images use object-fit: contain so nothing gets cropped.
+       The slot background matches the page so it looks clean.
+       To insert an image: fill in the src="" with your file path.
+       Example: src="images/calmora-hero.png"
+       The placeholder label disappears automatically when src is filled.
+    ============================================================ */
+    .img-slot {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: var(--surface);
+      /* flex centres the image inside the slot */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Aspect ratio helpers */
+    .img-slot.ratio-16x9 { aspect-ratio: 16 / 9; }
+    .img-slot.ratio-4x3  { aspect-ratio: 4 / 3; }
+    .img-slot.ratio-3x4  { aspect-ratio: 3 / 4; }
+    .img-slot.ratio-1x1  { aspect-ratio: 1 / 1; }
+    .img-slot.ratio-free { min-height: 280px; }
+
+    /* The image itself — contain keeps the full image visible */
+    .img-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;   /* <-- no cropping, full image always visible */
+      object-position: center;
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Placeholder shown when src is empty */
+    .img-slot .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+    }
+    .img-slot .placeholder i { font-size: 22px; margin-bottom: 0.3rem; }
+
+    /* Auto-hide placeholder when a real image src is set */
+    .img-slot img[src]:not([src=""]) ~ .placeholder { display: none; }
+
+    /* Dashed border on placeholder area */
+    .img-slot .placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1.5px dashed rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .cs-hero {
+      padding-top: 140px;
+      padding-bottom: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cs-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 18% 55%, rgba(233, 30, 99, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: clamp(80px, 12vw, 150px);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 0.88;
+      margin-bottom: 1.8rem;
+    }
+
+    /* Meta grid (role / tools / research) */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2.4rem;
+      padding-top: 2.4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--pink);
+      margin-bottom: 0.5rem;
+    }
+
+    .meta-value {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       PROCESS STEPS
+    ============================================================ */
+    .process-steps {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .process-step {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      padding: 1rem 0.8rem;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dim);
+      border-bottom: 2px solid var(--border);
+    }
+    .process-step.active {
+      color: var(--white);
+      border-bottom-color: var(--pink);
+    }
+
+    /* ============================================================
+       PERSONA CARDS
+    ============================================================ */
+    .persona-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+
+    .persona-card {
+      background: var(--surface);
+      padding: 2rem;
+    }
+
+    .persona-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--pink);
+      margin-bottom: 1rem;
+    }
+
+    /* ============================================================
+       OBSERVATIONS (stats)
+    ============================================================ */
+    .observations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+
+    .observation-card {
+      background: var(--surface);
+      padding: 2rem 1.6rem;
+    }
+    .observation-card.highlighted { background: var(--pink); }
+
+    .observation-number {
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .observation-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.55;
+      margin-top: 0.4rem;
+    }
+
+    .observation-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+    .observation-card.highlighted .observation-desc { color: rgba(255, 255, 255, 0.78); }
+
+    /* ============================================================
+       NEEDS vs FEATURES TABLE
+    ============================================================ */
+    .needs-table { margin-top: 2rem; }
+
+    .needs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      margin-bottom: 3px;
+    }
+    .needs-row:last-child { margin-bottom: 0; }
+
+    .needs-cell {
+      background: var(--surface);
+      padding: 1.4rem 1.6rem;
+    }
+    .needs-cell:first-child { border-radius: 0; }
+
+    .needs-cell-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--pink);
+      margin-bottom: 0.4rem;
+    }
+
+    .needs-cell-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .needs-cell-text strong { color: var(--white); }
+
+    /* ============================================================
+       FINAL SCREENS GRID
+    ============================================================ */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 2rem;
+    }
+
+    .screen-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--dim);
+      margin-top: 0.8rem;
+      padding-left: 2px;
+    }
+
+    /* ============================================================
+       FOOTER CTA
+    ============================================================ */
+    .footer-cta {
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+    .footer-cta::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(233, 30, 99, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .footer-cta h2 {
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .btn-pink {
+      background: var(--pink);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 0.85rem 2rem;
+      border-radius: 99px;
+      border: none;
+      cursor: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 10px 24px var(--pink-glow); }
+
+    .btn-outline {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 0.8rem 1.8rem;
+      border-radius: 99px;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .btn-outline:hover { border-color: rgba(255, 255, 255, 0.35); color: var(--white); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 768px) {
+      :root { --side-pad: 24px; }
+      .nav-links, .btn-hire { display: none; }
+      .hamburger { display: flex; }
+      .two-col { grid-template-columns: 1fr; }
+      .two-col.flipped > *:first-child,
+      .two-col.flipped > *:last-child { order: unset; }
+      .persona-grid      { grid-template-columns: 1fr; }
+      .observations-grid { grid-template-columns: 1fr; }
+      .screens-grid      { grid-template-columns: 1fr; }
+      .meta-grid         { grid-template-columns: 1fr; }
+      .needs-row         { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      :root { --side-pad: 20px; }
+      .hero-title { font-size: 60px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav>
+    <div class="nav-logo">ay<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="btn-hire">Hire Me</a>
+    <button class="hamburger" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+
+
+  <!-- ============================================================
+       1. HERO
+  ============================================================ -->
+  <section class="cs-hero">
+    <div class="container">
+
+      <div class="eyebrow reveal">Mobile Wellness App &bull; Case Study</div>
+
+      <h1 class="hero-title reveal delay-1">Calmora</h1>
+
+      <p class="body-text reveal delay-2" style="max-width: 500px;">
+        A mindfulness and relaxation app designed to help users manage stress through
+        guided meditation, breathing exercises, and mood tracking.
+      </p>
+
+      <div class="meta-grid reveal delay-3">
+        <div>
+          <div class="meta-label">Responsibilities</div>
+          <div class="meta-value">UX Research<br>UI Design<br>Prototyping</div>
+        </div>
+        <div>
+          <div class="meta-label">Tools</div>
+          <div class="meta-value">Figma</div>
+        </div>
+        <div>
+          <div class="meta-label">Research Methods</div>
+          <div class="meta-value">User Interviews<br>Surveys</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       2. HERO IMAGE
+       Insert your screen recording or overview image here.
+       Swap: src="images/calmora-overview.png"
+  ============================================================ -->
+  <div class="section" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="container">
+      <div class="img-slot ratio-16x9 reveal">
+        <img src="images/TOP c.png" alt="Calmora app overview" />
+        <div class="placeholder">
+          <i class="fa-regular fa-image"></i>
+          Hero image or screen recording goes here
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       3. PROJECT OVERVIEW
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="two-col">
+
+        <div class="reveal">
+          <div class="eyebrow">Project Overview</div>
+          <h2 class="section-title">A simple solution for daily mindfulness.</h2>
+          <p class="body-text">
+            Many people struggle with stress but find existing meditation apps
+            overwhelming or difficult to use. Calmora explores a simple and
+            user-friendly solution to encourage mindfulness in daily life,
+            meeting users where they are rather than where an app expects them to be.
+          </p>
+        </div>
+
+        <div class="reveal delay-2">
+
+          <div style="background: var(--surface); border-radius: 14px; padding: 2rem; margin-bottom: 16px;">
+            <div class="meta-label" style="margin-bottom: 0.6rem;">Problem Statement</div>
+            <p class="body-text">
+              Many users struggle to maintain daily wellness habits due to
+              <strong>busy schedules and lack of guidance.</strong>
+            </p>
+          </div>
+
+          <div style="background: var(--surface); border-radius: 14px; padding: 2rem;">
+            <div class="meta-label" style="margin-bottom: 0.6rem;">Goal</div>
+            <p class="body-text">
+              Design an intuitive mobile app that encourages
+              <strong>consistent wellness routines</strong> and promotes mental well-being.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       4. PROCESS
+  ============================================================ -->
+  <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
+    <div class="container">
+      <div class="eyebrow reveal">Process</div>
+      <div class="process-steps reveal delay-1">
+        <div class="process-step active">Understand</div>
+        <div class="process-step">Define</div>
+        <div class="process-step">Ideate</div>
+        <div class="process-step">Design</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       5. USER RESEARCH — PERSONAS
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="eyebrow reveal">User Research</div>
+      <h2 class="section-title reveal delay-1">Understanding who we are designing for.</h2>
+      <p class="body-text reveal delay-2" style="max-width: 600px; margin-bottom: 2.4rem;">
+        Through user interviews and surveys, two primary personas emerged that shaped every design decision throughout the project.
+      </p>
+
+      <div class="persona-grid reveal delay-2">
+
+        <!-- PERSONA 1 -->
+        <div class="persona-card">
+
+          <!-- Avatar and name -->
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.4rem;">
+            <div style="
+              width: 56px; height: 56px; border-radius: 50%;
+              background: rgba(233, 30, 99, 0.15);
+              border: 2px solid rgba(233, 30, 99, 0.3);
+              display: flex; align-items: center; justify-content: center;
+              font-size: 22px; font-weight: 800; color: var(--pink);
+              flex-shrink: 0;
+            ">A</div>
+            <div>
+              <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.02em;">Amahle, 27</div>
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-top: 0.1rem;">Corporate Professional</div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <p style="
+            font-size: 14px; line-height: 1.7; color: var(--muted);
+            border-left: 2px solid var(--pink); padding-left: 0.9rem;
+            margin-bottom: 1.4rem; font-style: italic;
+          ">
+            "I want to meditate but every app I download feels like another thing I have to maintain. I just need something that fits into my morning without me having to think about it."
+          </p>
+
+          <!-- Details grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.4rem;">
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Location</div>
+              <div style="font-size: 13px; color: var(--muted);">Johannesburg, SA</div>
+            </div>
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Occupation</div>
+              <div style="font-size: 13px; color: var(--muted);">Marketing Manager</div>
+            </div>
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Tech Comfort</div>
+              <div style="font-size: 13px; color: var(--muted);">High</div>
+            </div>
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Available Time</div>
+              <div style="font-size: 13px; color: var(--muted);">Under 10 min daily</div>
+            </div>
+          </div>
+
+          <!-- Goals -->
+          <div style="margin-bottom: 1.2rem;">
+            <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim); margin-bottom: 0.6rem;">Goals</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px;">&#10003;</span>
+                Reduce daily stress without a complex routine
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px;">&#10003;</span>
+                Track her mood over time to spot patterns
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px;">&#10003;</span>
+                Find quick exercises she can do during a lunch break
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pain points -->
+          <div>
+            <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim); margin-bottom: 0.6rem;">Pain Points</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px; opacity: 0.5;">&#215;</span>
+                Apps feel overwhelming and guilt-inducing when she misses a day
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px; opacity: 0.5;">&#215;</span>
+                Sessions are too long to fit into a real workday
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px; opacity: 0.5;">&#215;</span>
+                Cannot tell if anything she is doing is actually helping
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- PERSONA 2 -->
+        <div class="persona-card">
+
+          <!-- Avatar and name -->
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.4rem;">
+            <div style="
+              width: 56px; height: 56px; border-radius: 50%;
+              background: rgba(233, 30, 99, 0.15);
+              border: 2px solid rgba(233, 30, 99, 0.3);
+              display: flex; align-items: center; justify-content: center;
+              font-size: 22px; font-weight: 800; color: var(--pink);
+              flex-shrink: 0;
+            ">L</div>
+            <div>
+              <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.02em;">Liyema, 21</div>
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-top: 0.1rem;">University Student</div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <p style="
+            font-size: 14px; line-height: 1.7; color: var(--muted);
+            border-left: 2px solid var(--pink); padding-left: 0.9rem;
+            margin-bottom: 1.4rem; font-style: italic;
+          ">
+            "Exam season completely breaks me. I know I need to take care of my mental health but I do not know where to start and I cannot afford therapy right now."
+          </p>
+
+          <!-- Details grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.4rem;">
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Location</div>
+              <div style="font-size: 13px; color: var(--muted);">Cape Town, SA</div>
+            </div>
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Occupation</div>
+              <div style="font-size: 13px; color: var(--muted);">BSc Student, Year 3</div>
+            </div>
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Tech Comfort</div>
+              <div style="font-size: 13px; color: var(--muted);">Very High</div>
+            </div>
+            <div style="background: var(--surface2); border-radius: 10px; padding: 0.9rem;">
+              <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 0.3rem;">Budget</div>
+              <div style="font-size: 13px; color: var(--muted);">Free or very low cost</div>
+            </div>
+          </div>
+
+          <!-- Goals -->
+          <div style="margin-bottom: 1.2rem;">
+            <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim); margin-bottom: 0.6rem;">Goals</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px;">&#10003;</span>
+                Manage anxiety during high-pressure periods
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px;">&#10003;</span>
+                Have something to talk to when she feels overwhelmed and alone
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px;">&#10003;</span>
+                Build better sleep habits around her study schedule
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pain points -->
+          <div>
+            <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim); margin-bottom: 0.6rem;">Pain Points</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px; opacity: 0.5;">&#215;</span>
+                Cannot afford professional therapy or premium app subscriptions
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px; opacity: 0.5;">&#215;</span>
+                Feels judged by how "behind" she is compared to app streak tracking
+              </li>
+              <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start;">
+                <span style="color: var(--pink); margin-top: 1px; opacity: 0.5;">&#215;</span>
+                Needs support at 2am during study sessions, not at 7am reminders
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       6. EISENHOWER MATRIX
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="eyebrow reveal">Prioritisation</div>
+      <h2 class="section-title reveal delay-1">Eisenhower Matrix</h2>
+      <p class="body-text reveal delay-2" style="max-width: 620px; margin-bottom: 2.4rem;">
+        Features were mapped across four quadrants based on urgency and importance,
+        ensuring the core wellness tools were scoped into the MVP and non-essential
+        features were deferred or cut entirely.
+      </p>
+
+      <!-- 2x2 matrix grid -->
+      <div class="reveal delay-2" style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 3px;
+        border-radius: 14px;
+        overflow: hidden;
+      ">
+
+        <!-- Axis labels row above the grid -->
+        <div style="
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3px;
+        ">
+          <div style="background: var(--surface2); padding: 0.7rem 1.4rem; text-align: center;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink);">Urgent</span>
+          </div>
+          <div style="background: var(--surface2); padding: 0.7rem 1.4rem; text-align: center;">
+            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim);">Not Urgent</span>
+          </div>
+        </div>
+
+        <!-- Q1 — Important + Urgent (DO NOW) -->
+        <div style="background: var(--pink); padding: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.8;">Important</span>
+            <span style="font-size: 11px; font-weight: 800; background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 99px;">Do Now</span>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem;">
+            <li style="font-size: 13px; color: rgba(255,255,255,0.9); display: flex; gap: 0.6rem;">
+              <span style="opacity: 0.7; flex-shrink: 0;">&#9679;</span>
+              One-tap daily mood check-in
+            </li>
+            <li style="font-size: 13px; color: rgba(255,255,255,0.9); display: flex; gap: 0.6rem;">
+              <span style="opacity: 0.7; flex-shrink: 0;">&#9679;</span>
+              Guided breathing exercises (under 5 min)
+            </li>
+            <li style="font-size: 13px; color: rgba(255,255,255,0.9); display: flex; gap: 0.6rem;">
+              <span style="opacity: 0.7; flex-shrink: 0;">&#9679;</span>
+              Lora AI therapist chat feature
+            </li>
+            <li style="font-size: 13px; color: rgba(255,255,255,0.9); display: flex; gap: 0.6rem;">
+              <span style="opacity: 0.7; flex-shrink: 0;">&#9679;</span>
+              Onboarding flow and user profile setup
+            </li>
+          </ul>
+        </div>
+
+        <!-- Q2 — Important + Not Urgent (SCHEDULE) -->
+        <div style="background: var(--surface); padding: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim);">Important</span>
+            <span style="font-size: 11px; font-weight: 800; color: var(--muted); background: var(--surface2); padding: 0.2rem 0.6rem; border-radius: 99px;">Schedule</span>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem;">
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--pink); flex-shrink: 0;">&#9679;</span>
+              Mood history and progress visualisation
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--pink); flex-shrink: 0;">&#9679;</span>
+              Personalised session recommendations
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--pink); flex-shrink: 0;">&#9679;</span>
+              Guided sleep meditations
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--pink); flex-shrink: 0;">&#9679;</span>
+              Manage Emotion toolkit with definitions
+            </li>
+          </ul>
+        </div>
+
+        <!-- Q3 — Not Important + Urgent (DELEGATE) -->
+        <div style="background: var(--surface); padding: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim);">Not Important</span>
+            <span style="font-size: 11px; font-weight: 800; color: var(--muted); background: var(--surface2); padding: 0.2rem 0.6rem; border-radius: 99px;">Delegate</span>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem;">
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              Push notification logic and scheduling
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              Backend data syncing and storage
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              App store listing and screenshots
+            </li>
+          </ul>
+        </div>
+
+        <!-- Q4 — Not Important + Not Urgent (ELIMINATE) -->
+        <div style="background: var(--surface); padding: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--dim);">Not Important</span>
+            <span style="font-size: 11px; font-weight: 800; color: var(--dim); background: var(--surface2); padding: 0.2rem 0.6rem; border-radius: 99px;">Eliminate</span>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem;">
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              Social sharing and leaderboards
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              Gamification badges and streak counters
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              Community forums and user posts
+            </li>
+            <li style="font-size: 13px; color: var(--muted); display: flex; gap: 0.6rem;">
+              <span style="color: var(--dim); flex-shrink: 0;">&#9679;</span>
+              Video content library (v1 scope cut)
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Key takeaway note -->
+      <div class="reveal" style="
+        margin-top: 3px;
+        background: var(--surface);
+        border-radius: 0 0 14px 14px;
+        padding: 1.4rem 1.6rem;
+        border-top: 3px solid var(--pink);
+      ">
+        <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-right: 0.8rem;">Key Decision</span>
+        <span class="body-text" style="font-size: 14px;">
+          Streak counters and social features were deliberately eliminated in Q4. Research showed they were the primary driver of guilt and app abandonment — the opposite of what Calmora is designed to do.
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       7. TASK FLOWS
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="eyebrow reveal">Task Flow</div>
+      <h2 class="section-title reveal delay-1">Mapping the key user journeys.</h2>
+      <p class="body-text reveal delay-2" style="max-width: 600px; margin-bottom: 2.4rem;">
+        Two core task flows were mapped across the actual app screens to ensure every
+        step felt natural and required no explanation.
+      </p>
+
+
+      <!-- ════════════════════════════════
+           SCENARIO 1 — Track and Manage Emotion
+           Screens involved: Home → Tracker → SOs → Toolbox
+      ════════════════════════════════ -->
+      <div class="reveal" style="margin-bottom: 56px;">
+
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap;">
+          <div style="background: var(--pink); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; padding: 0.3rem 0.9rem; border-radius: 99px; flex-shrink: 0;">Scenario 1</div>
+          <span style="font-size: 17px; font-weight: 700; letter-spacing: -0.02em;">Track and Manage Emotion</span>
+        </div>
+
+        <!-- Screen-by-screen flow cards -->
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; border-radius: 14px 14px 0 0; overflow: hidden;">
+
+          <!-- Step 1 — Home screen -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 1</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Home</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Open App</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              Home screen greets user with "Welcome Back!" and immediately asks
+              "How are you feeling today?" with five emoji mood options.
+            </div>
+            <!-- Mini screen mock -->
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--dim);">
+              <div style="color: var(--white); font-weight: 600; font-size: 11px; margin-bottom: 0.3rem;">Welcome Back!</div>
+              <div style="margin-bottom: 0.4rem;">How are you feeling today?</div>
+              <div style="display: flex; gap: 4px; font-size: 14px;">😊 😔 😤 😴 😰</div>
+            </div>
+          </div>
+
+          <!-- Step 2 — Tracker -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 2</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Tracker</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Log Mood</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              User taps an emoji on the home screen and is taken to the Tracker.
+              "How are you feeling?" with the same emoji row plus a weekly
+              mood overview and a Reset Tip card.
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--dim);">
+              <div style="color: var(--white); font-weight: 600; font-size: 11px; margin-bottom: 0.3rem;">How are you feeling?</div>
+              <div style="display: flex; gap: 4px; font-size: 13px; margin-bottom: 0.4rem;">😊 😔 😤 😴 😰</div>
+              <div style="font-size: 10px;">Weekly Anxiety &bull; Morning Haze</div>
+            </div>
+          </div>
+
+          <!-- Step 3 — SOs screen -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 3</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">SOs</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Access Support</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              If the mood logged is low, the app surfaces the SOs screen.
+              "Take Care of Your Mind" with quick-tap options: Breathe,
+              Emergency Contact, Support Hotline, and 4-7-8 Breathing.
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--dim);">
+              <div style="color: var(--pink); font-weight: 700; font-size: 11px; margin-bottom: 0.4rem;">Take Care of Your Mind</div>
+              <div style="margin-bottom: 0.2rem;">🫁 Breathe</div>
+              <div style="margin-bottom: 0.2rem;">📞 Emergency Contact</div>
+              <div>🆘 Support Hotline</div>
+            </div>
+          </div>
+
+          <!-- Step 4 — Toolbox -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 4</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Toolbox</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Choose Exercise</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              User taps "Breathe" and lands in the Toolbox. They see Deep Forest Breath,
+              Breathing, Grounding, Mindfulness, and a Quick Relief section with
+              exercises like 4-5-5-1 Grounding and Body Scan Meal.
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--dim);">
+              <div style="color: var(--white); font-weight: 600; font-size: 11px; margin-bottom: 0.4rem;">Tool Box</div>
+              <div style="margin-bottom: 0.2rem;">🌿 Deep Forest Breath</div>
+              <div style="margin-bottom: 0.2rem;">💨 Breathing</div>
+              <div>🌱 Grounding</div>
+            </div>
+          </div>
+
+          <!-- Step 5 — End state (highlighted) -->
+          <div style="background: rgba(233,30,99,0.1); padding: 1.4rem 1.2rem; border-left: 2px solid var(--pink);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 5</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--pink); background: rgba(233,30,99,0.15); padding: 0.15rem 0.5rem; border-radius: 99px;">Done</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Start Breathing Exercise</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              User taps "Start Breathing" on the Deep Forest Breath card.
+              An animated breathing guide begins. The exercise is under 5 minutes
+              and requires no setup or account upgrade.
+            </div>
+            <div style="background: rgba(233,30,99,0.12); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--muted);">
+              <div style="color: var(--white); font-weight: 600; font-size: 11px; margin-bottom: 0.3rem;">Deep Forest Breath</div>
+              <div style="margin-bottom: 0.4rem;">A breathing technique to anchor and breathe</div>
+              <div style="background: var(--pink); color: #fff; font-size: 10px; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 99px; display: inline-block;">Start Breathing</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Outcome bar -->
+        <div style="background: var(--surface); border-radius: 0 0 14px 14px; padding: 1rem 1.4rem; display: flex; align-items: center; gap: 0.8rem; border-top: 1px solid var(--border);">
+          <i class="fa-solid fa-circle-check" style="color: var(--pink); font-size: 14px; flex-shrink: 0;"></i>
+          <span style="font-size: 13px; color: var(--muted);">
+            <strong style="color: var(--white);">Outcome:</strong>
+            User logs their emotion, sees relevant support options, and begins a calming exercise.
+            The full flow takes under 90 seconds from home screen to breathing guide.
+          </span>
+        </div>
+
+      </div>
+
+
+      <!-- ════════════════════════════════
+           SCENARIO 2 — Speak to Lora the AI Therapist
+           Screens involved: Home → Chat (Lora) → Toolbox recommendation
+      ════════════════════════════════ -->
+      <div class="reveal delay-1">
+
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap;">
+          <div style="background: var(--pink); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; padding: 0.3rem 0.9rem; border-radius: 99px; flex-shrink: 0;">Scenario 2</div>
+          <span style="font-size: 17px; font-weight: 700; letter-spacing: -0.02em;">Speak to Lora the AI Therapist</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; border-radius: 14px 14px 0 0; overflow: hidden;">
+
+          <!-- Step 1 — Home -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 1</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Home</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Open App</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              User opens Calmora feeling overwhelmed. They see the home screen
+              with Coping Toolbox, Managing Workload, and Calmora Audios cards
+              but want to talk it out, not do an exercise yet.
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--dim);">
+              <div style="color: var(--white); font-weight: 600; font-size: 11px; margin-bottom: 0.3rem;">Welcome Back!</div>
+              <div style="margin-bottom: 0.3rem;">Coping Toolbox</div>
+              <div style="margin-bottom: 0.3rem;">Managing Workload</div>
+              <div>Calmora Audios 🎵</div>
+            </div>
+          </div>
+
+          <!-- Step 2 — Tap Chat icon -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 2</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Nav</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Tap Chat in Bottom Nav</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              User taps the Chat icon in the bottom navigation bar.
+              The bottom nav contains Home, Journal, Toolbox, SOs, and Chat tabs
+              — Lora is always one tap away from anywhere in the app.
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.7rem; font-size: 11px; color: var(--dim);">
+              <div style="display: flex; justify-content: space-between; font-size: 10px;">
+                <span>🏠</span><span>📓</span><span>🧰</span><span>🆘</span>
+                <span style="color: var(--pink); font-weight: 700;">💬</span>
+              </div>
+              <div style="text-align: right; color: var(--pink); font-size: 10px; margin-top: 0.3rem;">Chat selected</div>
+            </div>
+          </div>
+
+          <!-- Step 3 — Lora greeting -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 3</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Chat</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Lora Greets the User</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              Lora opens with "Hello, I'm Lora" and a warm welcome message.
+              She immediately says "It is a beautiful day in the park. I have
+              noticed our heart rate has been elevated — tell me how things are going."
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--muted);">
+              <div style="color: var(--pink); font-weight: 700; margin-bottom: 0.3rem;">Lora 🌿</div>
+              <div style="font-style: italic;">"Hello, I'm Lora. How are you feeling right now?"</div>
+            </div>
+          </div>
+
+          <!-- Step 4 — User vents -->
+          <div style="background: var(--surface); padding: 1.4rem 1.2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 4</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--dim); background: var(--surface2); padding: 0.15rem 0.5rem; border-radius: 99px;">Chat</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">User Vents Freely</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              User types how they feel. Lora responds conversationally, acknowledges
+              "a moment of panic" and follows up with "This sounds really stressful.
+              I am really sorry — tell me more." No judgment, no clinical tone.
+            </div>
+            <div style="background: var(--surface2); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--muted);">
+              <div style="text-align: right; color: var(--white); background: rgba(233,30,99,0.2); padding: 0.4rem 0.6rem; border-radius: 8px 8px 2px 8px; margin-bottom: 0.4rem; font-size: 11px;">I have been feeling so overwhelmed lately...</div>
+              <div style="color: var(--pink); font-style: italic; font-size: 11px;">"This sounds really stressful. Tell me more."</div>
+            </div>
+          </div>
+
+          <!-- Step 5 — Toolbox suggestion (highlighted) -->
+          <div style="background: rgba(233,30,99,0.1); padding: 1.4rem 1.2rem; border-left: 2px solid var(--pink);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+              <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink);">Step 5</span>
+              <span style="font-size: 10px; font-weight: 600; color: var(--pink); background: rgba(233,30,99,0.15); padding: 0.15rem 0.5rem; border-radius: 99px;">Done</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;">Lora Suggests a Toolbox Exercise</div>
+            <div style="font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 1rem;">
+              After the conversation, Lora suggests "Start Your Breathing" as a
+              next step and links directly to the Toolbox. The user can tap through
+              without leaving the chat flow.
+            </div>
+            <div style="background: rgba(233,30,99,0.12); border-radius: 8px; padding: 0.8rem; font-size: 11px; color: var(--muted);">
+              <div style="color: var(--pink); font-style: italic; margin-bottom: 0.5rem;">"Would you like to try a quick breathing exercise?"</div>
+              <div style="background: var(--pink); color: #fff; font-size: 10px; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 99px; display: inline-block;">Start Breathing 💨</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Outcome bar -->
+        <div style="background: var(--surface); border-radius: 0 0 14px 14px; padding: 1rem 1.4rem; display: flex; align-items: center; gap: 0.8rem; border-top: 1px solid var(--border);">
+          <i class="fa-solid fa-circle-check" style="color: var(--pink); font-size: 14px; flex-shrink: 0;"></i>
+          <span style="font-size: 13px; color: var(--muted);">
+            <strong style="color: var(--white);">Outcome:</strong>
+            User feels genuinely heard by Lora, processes their emotions through conversation,
+            and is guided into a relevant Toolbox exercise without ever feeling pushed or rushed.
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       8. QUANTITATIVE RESEARCH
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="eyebrow reveal">Quantitative Research</div>
+      <h2 class="section-title reveal delay-1">Observations</h2>
+      <p class="body-text reveal delay-2">Sample size: 4 users</p>
+
+      <div class="observations-grid reveal delay-2">
+
+        <div class="observation-card">
+          <div class="observation-number">75%</div>
+          <div class="observation-label">Found apps too complicated</div>
+          <div class="observation-desc">
+            3 out of 4 users find existing wellness apps too complicated to navigate.
+          </div>
+        </div>
+
+        <div class="observation-card highlighted">
+          <div class="observation-number">100%</div>
+          <div class="observation-label">Need sessions under 5 minutes</div>
+          <div class="observation-desc">
+            All 4 users demand sessions under 5 minutes to fit their busy schedules.
+          </div>
+        </div>
+
+        <div class="observation-card">
+          <div class="observation-number">50%</div>
+          <div class="observation-label">Struggle with progress tracking</div>
+          <div class="observation-desc">
+            2 out of 4 users struggle to see the big picture of their wellness progress.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       9. NEEDS vs CALMORA FEATURES
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="eyebrow reveal">How We Responded</div>
+      <h2 class="section-title reveal delay-1">Needs vs. Calmora Features</h2>
+
+      <div class="needs-table reveal delay-2">
+
+        <div class="needs-row">
+          <div class="needs-cell">
+            <div class="needs-cell-label">User Need</div>
+            <div class="needs-cell-text">Quick stress relief</div>
+          </div>
+          <div class="needs-cell">
+            <div class="needs-cell-label">Calmora Feature</div>
+            <div class="needs-cell-text">
+              <strong>Tool Box</strong> with one-minute breathing exercises
+            </div>
+          </div>
+        </div>
+
+        <div class="needs-row">
+          <div class="needs-cell">
+            <div class="needs-cell-label">User Need</div>
+            <div class="needs-cell-text">Emotional clarity</div>
+          </div>
+          <div class="needs-cell">
+            <div class="needs-cell-label">Calmora Feature</div>
+            <div class="needs-cell-text">
+              <strong>Manage Emotion</strong> with definitions and reflection prompts
+            </div>
+          </div>
+        </div>
+
+        <div class="needs-row">
+          <div class="needs-cell">
+            <div class="needs-cell-label">User Need</div>
+            <div class="needs-cell-text">Immediate support</div>
+          </div>
+          <div class="needs-cell">
+            <div class="needs-cell-label">Calmora Feature</div>
+            <div class="needs-cell-text">
+              <strong>Lora</strong>, a 24/7 AI therapist for instant venting and support
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       10. WIREFRAMES
+       Swap: src="images/wirefrae.png"
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="two-col">
+
+        <div class="reveal">
+          <div class="eyebrow">Wireframes</div>
+          <h2 class="section-title">Mapping the structure before the polish.</h2>
+          <p class="body-text">
+            Low-fidelity wireframes were used to test the core navigation flow and
+            information hierarchy before committing to any visual direction. The goal was
+            to confirm that users could reach any key feature within three taps or fewer.
+          </p>
+        </div>
+
+        <div class="reveal delay-2">
+          <div class="img-slot ratio-4x3">
+            <img src="images/Screenshot 2026-03-26 at 14.15.13.png" alt="Calmora wireframes" />
+            <div class="placeholder">
+              <i class="fa-regular fa-image"></i>
+              Wireframes image goes here<br>
+              <span style="font-size: 10px; opacity: 0.6;">src="images/wirefrae.png"</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       11. FINAL SCREENS
+       Swap src values:
+         Homepage  src="images/hp.png"
+         Toolbox   src="images/toolbox.png"
+         AI Chat   src="images/lora.png"
+  ============================================================ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="eyebrow reveal">Final Screens</div>
+      <h2 class="section-title reveal delay-1">The finished product.</h2>
+
+      <div class="screens-grid reveal delay-2">
+
+        <div>
+          <div class="img-slot ratio-3x4">
+            <img src="images/ch.png" alt="Calmora homepage screen" />
+            <div class="placeholder">
+              <i class="fa-solid fa-mobile-screen"></i>
+              Homepage screen<br>
+              <span style="font-size: 10px; opacity: 0.6;">src="images/hp.png"</span>
+            </div>
+          </div>
+          <div class="screen-label">Homepage</div>
+        </div>
+
+        <div>
+          <div class="img-slot ratio-3x4">
+            <img src="images/ct.png" alt="Calmora toolbox screen" />
+            <div class="placeholder">
+              <i class="fa-solid fa-mobile-screen"></i>
+              Toolbox screen<br>
+              <span style="font-size: 10px; opacity: 0.6;">src="images/toolbox.png"</span>
+            </div>
+          </div>
+          <div class="screen-label">Toolbox</div>
+        </div>
+
+        <div>
+          <div class="img-slot ratio-3x4">
+            <img src="images/cai.png" alt="Lora AI chatbot screen" />
+            <div class="placeholder">
+              <i class="fa-solid fa-mobile-screen"></i>
+              AI Chatbot screen<br>
+              <span style="font-size: 10px; opacity: 0.6;">src="images/lora.png"</span>
+            </div>
+          </div>
+          <div class="screen-label">AI Chatbot (Lora)</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+
+  <!-- ============================================================
+       12. FOOTER CTA
+  ============================================================ -->
+  <section class="footer-cta">
+    <div class="container">
+
+      <div class="eyebrow reveal" style="justify-content: center;">Get In Touch</div>
+
+      <h2 class="reveal delay-1">
+        Ready to start a<br>
+        <span style="color: var(--pink);">dialogue?</span>
+      </h2>
+
+      <div class="cta-buttons reveal delay-2">
+        <a href="index.html#contact" class="btn-pink">
+          Let's Talk <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="medigo.html" class="btn-outline">Next: Medi-go &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+
+    /* Cursor */
+    var cursor     = document.getElementById('cursor');
+    var cursorRing = document.getElementById('cursor-ring');
+    var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top  = mouseY + 'px';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { document.body.classList.add('cursor-expanded'); });
+      el.addEventListener('mouseleave', function() { document.body.classList.remove('cursor-expanded'); });
+    });
+
+    /* Hamburger */
+    var hamburgerBtn = document.getElementById('hamburger-btn');
+    var mobileMenu   = document.getElementById('mobile-menu');
+
+    hamburgerBtn.addEventListener('click', function() {
+      hamburgerBtn.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        hamburgerBtn.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    /* Scroll reveal */
+    var revealEls = document.querySelectorAll('.reveal');
+    var revealObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealEls.forEach(function(el) { revealObs.observe(el); });
+
+  </script>
+
+</body>
+</html>

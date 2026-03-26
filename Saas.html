@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medi-go — Case Study · Ayanda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#0A0A0A;
+      --surface:#141414;
+      --surface2:#1C1C1C;
+      --border:rgba(255,255,255,.06);
+      --pink:#E91E63;
+      --pink-glow:rgba(233,30,99,.25);
+      --white:#FFFFFF;
+      --muted:#AAAAAA;
+      --dim:#555555;
+      --font:'Archivo',sans-serif;
+      --px:80px;
+      --max:1200px;
+    }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--bg);
+      color:var(--white);
+      font-family:var(--font);
+      cursor:none;
+      overflow-x:hidden;
+    }
+
+    /* Custom cursor */
+    #cursor {
+      position:fixed;
+      width:10px;
+      height:10px;
+      background:var(--pink);
+      border-radius:50%;
+      pointer-events:none;
+      z-index:9999;
+      transform:translate(-50%, -50%);
+      transition:width .2s,height .2s;
+    }
+    #cursor-ring {
+      position:fixed;
+      width:32px;
+      height:32px;
+      border:1.5px solid rgba(233,30,99,.5);
+      border-radius:50%;
+      pointer-events:none;
+      z-index:9998;
+      transform:translate(-50%,-50%);
+    }
+    body.cx #cursor { width:6px; height:6px; }
+    body.cx #cursor-ring { width:52px; border-color:var(--pink); }
+
+    a { text-decoration:none; color:inherit; }
+
+    /* Navigation */
+    nav {
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      z-index:1000;
+      padding:1.6rem 5%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      backdrop-filter:blur(12px);
+      background:rgba(10,10,10,.8);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-logo { font-size:20px; font-weight:800; letter-spacing:-.03em; }
+    .nav-logo span { color:var(--pink); }
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+    .nav-links a { font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); transition:color .2s; }
+    .nav-links a:hover { color:var(--white); }
+    .btn-hire {
+      background:var(--pink);
+      color:#fff;
+      font-size:13px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      padding:.6rem 1.5rem;
+      border-radius:99px;
+      border:none;
+      cursor:none;
+      transition:transform .25s, box-shadow .25s;
+    }
+    .btn-hire:hover { transform:translateY(-3px); box-shadow:0 10px 24px var(--pink-glow); }
+
+    /* Hamburger */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:none; background:none; border:none; padding:4px; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--white); border-radius:2px; transition:transform .3s,opacity .3s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display:none;
+      position:fixed;
+      top:68px;
+      left:0;
+      width:100%;
+      background:rgba(10,10,10,.97);
+      backdrop-filter:blur(14px);
+      padding:1.8rem 5%;
+      z-index:999;
+      border-bottom:1px solid var(--border);
+      flex-direction:column;
+      gap:1.2rem;
+    }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-size:14px; font-weight:500; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+
+    /* Containers & sections */
+    .container { max-width:var(--max); margin:0 auto; padding:0 var(--px); }
+    .divider { border:none; border-top:1px solid var(--border); }
+    .sec { padding:80px 0; }
+
+    /* Reveal animations */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .8s ease-out, transform .8s ease-out; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:.1s; }
+    .d2 { transition-delay:.2s; }
+    .d3 { transition-delay:.3s; }
+
+    /* Text */
+    .eyebrow { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.2em; color:var(--pink); margin-bottom:.7rem; }
+    .stitle { font-size:clamp(26px,3.2vw,40px); font-weight:800; letter-spacing:-.03em; line-height:1.05; margin-bottom:1rem; }
+    .btext { font-size:15px; line-height:1.8; color:var(--muted); }
+    .btext strong { color:var(--white); }
+
+    /* Placeholders */
+    .ph { width:100%; border-radius:14px; background:var(--surface); display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; }
+    .ph.r43 { aspect-ratio:4/3; }
+    .ph-in { width:82%; height:82%; border:1px solid var(--border); border-radius:10px; background:var(--surface2); display:flex; flex-direction:column; padding:16px; }
+
+    /* Bars inside placeholders */
+    .bar { height:7px; border-radius:4px; background:rgba(255,255,255,.05); margin-bottom:7px; }
+    .bar.pk { background:rgba(233,30,99,.25); }
+    .bar.bl { background:rgba(30,144,233,.3); }
+
+    /* Two-column layout */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+    .two-col.top { align-items:start; }
+    .two-col.flip>*:first-child { order:2; }
+    .two-col.flip>*:last-child { order:1; }
+
+    /* Cards & lists */
+    .card-row { display:grid; grid-template-columns:1fr 1fr; gap:3px; border-radius:14px; overflow:hidden; margin-top:2rem; }
+    .card { background:var(--surface); padding:2rem; }
+    .card-name { font-size:19px; font-weight:800; letter-spacing:-.02em; margin-bottom:.2rem; }
+    .card-role { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.13em; color:var(--pink); margin-bottom:1rem; }
+    .card-q { font-size:14px; line-height:1.7; color:var(--muted); border-left:2px solid var(--pink); padding-left:.9rem; margin-bottom:1rem; font-style:italic; }
+    .tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+    .tag { font-size:11px; background:var(--surface2); border:1px solid var(--border); padding:.22rem .6rem; border-radius:99px; color:var(--muted); }
+
+    .flist { list-style:none; margin-top:1.2rem; }
+    .fi { display:flex; gap:1rem; padding:.85rem 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+    .fn { font-size:11px; font-weight:700; color:var(--pink); min-width:20px; padding-top:2px; }
+    .ft { font-size:14px; font-weight:600; margin-bottom:.22rem; }
+    .fd { font-size:13px; color:var(--muted); line-height:1.6; }
+
+    /* CTA */
+    .cs-cta { padding:100px 0; text-align:center; position:relative; overflow:hidden; border-top:1px solid var(--border); }
+    .cs-cta::before {
+      content:'';
+      position:absolute;
+      bottom:0;
+      left:50%;
+      transform:translateX(-50%);
+      width:600px;
+      height:300px;
+      background:radial-gradient(ellipse, rgba(233,30,99,.1) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .cs-cta h2 { font-size:clamp(36px,5.5vw,68px); font-weight:800; letter-spacing:-.04em; line-height:.95; margin-bottom:1.6rem; position:relative; }
+    .cta-btns { display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; position:relative; }
+    .btn-pink {
+      background:var(--pink);
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      padding:.8rem 2rem;
+      border-radius:99px;
+      border:none;
+      cursor:none;
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      transition:transform .25s, box-shadow .25s;
+    }
+    .btn-pink:hover { transform:translateY(-3px); box-shadow:0 10px 24px var(--pink-glow); }
+    .btn-ol {
+      font-size:14px;
+      font-weight:500;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.14);
+      padding:.75rem 1.8rem;
+      border-radius:99px;
+      transition:border-color .25s, color .25s;
+    }
+    .btn-ol:hover { border-color:rgba(255,255,255,.35); color:var(--white); }
+
+    @media(max-width:768px){
+      :root { --px:24px; }
+      .nav-links,.btn-hire { display:none; }
+      .hamburger { display:flex; }
+      .two-col,.card-row { grid-template-columns:1fr; }
+      .two-col.flip>*:first-child,.two-col.flip>*:last-child { order:unset; }
+    }
+    @media(max-width:480px){ :root{--px:20px;} }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">ay<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <a href="index.html#contact" class="btn-hire">Hire Me</a>
+  <button class="hamburger" id="hb"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html">Home</a>
+  <a href="index.html#work">Work</a>
+  <a href="index.html#about">About</a>
+  <a href="index.html#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="sec" style="padding-top:140px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 75% 40%,rgba(30,144,233,.08) 0%,transparent 60%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="eyebrow reveal" style="display:flex;align-items:center;gap:.6rem;">
+      <span style="display:inline-block;width:22px;height:1.5px;background:var(--pink);"></span>Case Study · 2023
+    </div>
+    <h1 class="reveal d1" style="font-size:clamp(80px,12vw,160px);font-weight:800;letter-spacing:-.05em;line-height:.88;margin-bottom:1.6rem;">Medi-go -Saas.</h1>
+    <p class="btext reveal d2" style="max-width:460px;">Easy Healthcare for All. A SaaS dashboard that turns dense medical records into scannable, actionable interfaces for clinicians — built to strict accessibility standards.</p>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- EASY HEALTHCARE FOR ALL — two col with VIDEO -->
+<section class="sec">
+  <div class="container">
+    <div class="two-col">
+      <div class="reveal">
+        <p class="eyebrow">The Problem</p>
+        <h2 class="stitle">Easy Healthcare for All.</h2>
+        <p class="btext">
+          Clinicians spend an average of <strong>34% of their shift navigating software</strong> rather than caring for patients. The legacy system required 11 clicks to access a patient's current medication list. Medi-go redesigns the core clinical workflow from the ground up — prioritising speed, legibility, and WCAG AA accessibility.
+        </p>
+      </div>
+      <div class="reveal d2">
+        <!-- REPLACING IMAGE PLACEHOLDER WITH VIDEO -->
+      <  <img class="ph r43" controls>
+          <source src="images/saass.png" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rest of your sections (Research, Findings, Interface, CTA) go here exactly as before... -->
+
+<!-- ③ LONG COPY — two col paragraphs -->
+<section class="sec">
+  <div class="container">
+    <div class="two-col top">
+      <div class="reveal">
+        <p class="eyebrow">Context</p>
+        <h2 class="stitle">Long, complicated admin processes take time away from the people that need it most.</h2>
+        <p class="btext">A digitally-thriving platform is a proven process for working to ensure and grow a steady increase in your organisation's performance ,based on accessible infrastructure for patients from all walks of life.</p>
+      </div>
+      <div class="reveal d2">
+        <p class="eyebrow" style="margin-top:2.4rem;">&nbsp;</p>
+        <p class="btext">A digitally-inclusive system creates an environment that enables patients to conveniently access healthcare services according to their individual needs ,removing the barriers of geography, language, and digital literacy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ④ RESEARCH — Azande & Dr. Ntaniko -->
+<section class="sec">
+  <div class="container">
+    <p class="eyebrow reveal">Research</p>
+    <h2 class="stitle reveal d1">Clinicians, Not Users</h2>
+    <p class="btext reveal d2" style="max-width:560px;">40 hours of contextual inquiry embedded with clinical staff at two public hospitals,observing patient handovers, ward rounds, and triage. 16 structured interviews with doctors, nurses, and admin staff.</p>
+    <div class="card-row reveal d1">
+      <div class="card">
+        <div class="card-name">Azande</div>
+        <div class="card-role">Registrar · Emergency Medicine</div>
+        <p class="card-q">"I need the patient's current meds, allergies, and last bloods in under 10 seconds. Everything else is noise."</p>
+        <div class="tags"><span class="tag">Speed-critical</span><span class="tag">High-pressure</span><span class="tag">Tablet user</span></div>
+      </div>
+      <div class="card">
+        <div class="card-name">Dr. Ntaniko</div>
+        <div class="card-role">Ward Sister · General Surgery</div>
+        <p class="card-q">"The current system logs me out every 8 minutes. I spend more time logging back in than documenting care."</p>
+        <div class="tags"><span class="tag">Multi-patient</span><span class="tag">Documentation-heavy</span><span class="tag">Session frustration</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ⑤ FINDINGS + PRINCIPLES — two col feature lists -->
+<section class="sec">
+  <div class="container">
+    <div class="two-col top">
+      <div class="reveal">
+        <p class="eyebrow">Findings</p>
+        <h2 class="stitle">Key barriers identified</h2>
+        <ul class="flist">
+          <li class="fi"><span class="fn">01</span><div><div class="ft">11 clicks to access medication list</div><div class="fd">The legacy system buried critical data behind multiple layers of navigation — costing clinicians minutes per patient.</div></div></li>
+          <li class="fi"><span class="fn">02</span><div><div class="ft">8-minute auto-logout</div><div class="fd">Frequent session expiry was the single most-cited frustration across all 16 interviews.</div></div></li>
+          <li class="fi"><span class="fn">03</span><div><div class="ft">Touch targets too small</div><div class="fd">Data entry errors were 3× higher on 7" tablets due to touch targets as small as 18px.</div></div></li>
+        </ul>
+      </div>
+      <div class="reveal d2">
+        <p class="eyebrow">Design Response</p>
+        <h2 class="stitle">How we solved it</h2>
+        <ul class="flist">
+          <li class="fi"><span class="fn">01</span><div><div class="ft">3-click patient profile</div><div class="fd">Any critical metric — meds, allergies, vitals, bloods — accessible within 3 interactions from anywhere.</div></div></li>
+          <li class="fi"><span class="fn">02</span><div><div class="ft">Persistent session</div><div class="fd">Replaced 8-minute timeouts with biometric re-auth, eliminating the primary workflow interruption.</div></div></li>
+          <li class="fi"><span class="fn">03</span><div><div class="ft">44px minimum touch targets</div><div class="fd">All interactive elements rebuilt to WCAG 2.5.5 standard — reducing tablet entry errors by 68%.</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ⑥ THE INTERFACE -->
+<section class="sec">
+  <div class="container">
+    <p class="eyebrow reveal">Visual Design</p>
+    <h2 class="stitle reveal d1">The Interface.</h2>
+
+    <!-- Booking Flow -->
+<div class="iface-block two-col reveal" style="margin-top:2.4rem;">
+    <div>
+      <div class="iface-label">Booking Flow</div>
+      <div class="iface-sub">Patient Appointment Booking</div>
+      <p class="btext">
+        Users no longer have to wait hours at the clinic. Book online, choose an available date, and secure your appointment quickly.
+      </p>
+    </div>
+    <div class="reveal d2">
+      <video class="ph r43" controls>
+        <source src="videos/booking.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+  
+  <!-- DocChat -->
+  <div class="iface-block two-col flip reveal" style="margin-top:56px;">
+    <div class="reveal d2">
+      <video class="ph r43" controls>
+        <source src="videos/saas.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div>
+      <div class="iface-label">DocChat</div>
+      <div class="iface-sub">Talk to Your Doctor</div>
+      <p class="btext">
+        Chat with your doctor about any health concerns. Schedule visits, request referrals, and receive lab results  all securely in-app.
+      </p>
+    </div>
+  </div>
+  
+  <!-- Medical Records -->
+  <div class="iface-block two-col reveal" style="margin-top:56px;">
+    <div>
+      <div class="iface-label">Medical Records</div>
+      <div class="iface-sub">Lab Results & PDFs</div>
+      <p class="btext">
+        View your medical records, download educational PDFs, and check laboratory and diagnostic results anytime.
+      </p>
+    </div>
+    <div class="reveal d2">
+      <video class="ph r43" controls>
+        <source src="videos/records.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+<!-- ⑦ CTA — No more 4 AM queues -->
+<section class="cs-cta">
+  <div class="container">
+    <h2 class="reveal">No more 4 AM queues.<br><span style="color:var(--pink)">Easy Healthcare.</span></h2>
+    <div class="cta-btns reveal d1">
+      <a href="index.html#contact" class="btn-pink">Start a Project <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="kalmora.html" class="btn-ol">View Kalmora →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let cx=0,cy=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cur.style.left=cx+'px';cur.style.top=cy+'px';});
+  (function a(){rx+=(cx-rx)*.12;ry+=(cy-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+  document.querySelectorAll('.btn-pink,.btn-hire,.btn-ol').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cx'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cx'));});
+  const hb=document.getElementById('hb'),mm=document.getElementById('mm');
+  hb.addEventListener('click',()=>{hb.classList.toggle('open');mm.classList.toggle('open');});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
