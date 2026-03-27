@@ -11,18 +11,12 @@
 
   <style>
 
-    /* ============================================================
-       RESET
-    ============================================================ */
     *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* ============================================================
-       DESIGN TOKENS
-    ============================================================ */
     :root {
       --bg:         #0A0A0A;
       --surface:    #141414;
@@ -51,9 +45,6 @@
 
     a { text-decoration: none; color: inherit; }
 
-    /* ============================================================
-       CURSOR
-    ============================================================ */
     #cursor {
       position: fixed; width: 10px; height: 10px;
       background: var(--pink); border-radius: 50%;
@@ -73,9 +64,6 @@
     body.cursor-expanded #cursor      { width: 6px; height: 6px; }
     body.cursor-expanded #cursor-ring { width: 52px; height: 52px; border-color: var(--pink); }
 
-    /* ============================================================
-       NAV
-    ============================================================ */
     nav {
       position: fixed; top: 0; left: 0; width: 100%;
       z-index: 1000; padding: 1.8rem 5%;
@@ -132,9 +120,6 @@
       text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
     }
 
-    /* ============================================================
-       LAYOUT
-    ============================================================ */
     .container {
       max-width: var(--max-width);
       margin: 0 auto;
@@ -144,9 +129,6 @@
     .section { padding: 120px 0; }
     .section-divider { border: none; border-top: 1px solid var(--border); }
 
-    /* ============================================================
-       REVEAL
-    ============================================================ */
     .reveal {
       opacity: 0; transform: translateY(32px);
       transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -157,9 +139,6 @@
     .delay-3 { transition-delay: 0.3s; }
     .delay-4 { transition-delay: 0.4s; }
 
-    /* ============================================================
-       SHARED TEXT
-    ============================================================ */
     .eyebrow {
       font-size: 11px; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.2em;
@@ -170,14 +149,17 @@
     .body-text strong { color: var(--white); }
 
     /* ============================================================
-       IMAGE SLOT
+       IMAGE SLOT — THE CORRECT FIX
+       background: var(--bg) makes the "empty" area around the image
+       the same colour as the page — totally invisible.
+       object-fit: contain keeps the full image without cropping.
     ============================================================ */
     .img-slot {
       width: 100%;
       border-radius: 16px;
       overflow: hidden;
       position: relative;
-      background: var(--surface);
+      background: var(--bg);      /* ← KEY FIX: matches page bg, not grey surface */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -191,7 +173,7 @@
     .img-slot img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: contain;        /* keeps full image, no cropping */
       display: block;
     }
 
@@ -216,9 +198,6 @@
     .img-slot .placeholder i { font-size: 20px; margin-bottom: 0.2rem; }
     .img-slot img[src]:not([src=""]) ~ .placeholder { display: none; }
 
-    /* ============================================================
-       HERO
-    ============================================================ */
     #home {
       min-height: 100vh;
       display: flex; align-items: center;
@@ -298,9 +277,6 @@
       color: var(--dim); margin-top: 0.3rem;
     }
 
-    /* ============================================================
-       WORK SECTION
-    ============================================================ */
     .work-header {
       display: flex; justify-content: space-between;
       align-items: flex-end; margin-bottom: 80px;
@@ -367,9 +343,6 @@
     }
     .strip-card.highlight .strip-card-label { color: rgba(255, 255, 255, 0.75); }
 
-    /* ============================================================
-       ABOUT
-    ============================================================ */
     .about-grid {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 80px; align-items: start;
@@ -397,7 +370,6 @@
     .phil-title { font-size: 15px; font-weight: 600; margin-bottom: 0.3rem; }
     .phil-desc  { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-    /* Bento grid */
     .bento-label {
       font-size: 11px; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.18em;
@@ -429,7 +401,6 @@
     .bento-years { font-size: 40px; font-weight: 800; color: var(--pink); letter-spacing: -0.03em; line-height: 1; }
     .bento-years-label { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
 
-    /* Code tag badges */
     .code-tag {
       display: inline-block;
       font-size: 11px; font-weight: 700;
@@ -441,9 +412,6 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* ============================================================
-       CONTACT FORM SECTION
-    ============================================================ */
     #contact {
       border-top: 1px solid var(--border);
       position: relative; overflow: hidden;
@@ -480,13 +448,9 @@
     }
     .contact-detail i { color: var(--pink); width: 16px; }
 
-    .contact-form {
-      display: flex; flex-direction: column; gap: 16px;
-    }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
 
-    .form-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
 
@@ -541,9 +505,6 @@
     }
     .form-success.visible { display: block; }
 
-    /* ============================================================
-       FOOTER BAR
-    ============================================================ */
     .footer-bar {
       display: flex; justify-content: space-between; align-items: center;
       border-top: 1px solid var(--border);
@@ -555,9 +516,6 @@
     .footer-socials a { font-size: 16px; color: var(--dim); transition: color 0.2s; }
     .footer-socials a:hover { color: var(--pink); }
 
-    /* ============================================================
-       RESPONSIVE
-    ============================================================ */
     @media (max-width: 1024px) {
       :root { --side-pad: 48px; }
       .project-card.image-left,
@@ -816,7 +774,6 @@
           <div class="bento-label">Tools &amp; Stack</div>
           <div class="bento-grid">
 
-            <!-- Figma -->
             <div class="bento-card">
               <span class="bento-icon"><i class="fa-brands fa-figma"></i></span>
               <div>
@@ -825,10 +782,8 @@
               </div>
             </div>
 
-            <!-- FigJam -->
             <div class="bento-card">
               <span class="bento-icon" style="font-size: 22px;">
-                <!-- FigJam squiggle icon approximation -->
                 <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="26" height="26" rx="6" fill="rgba(233,30,99,0.12)"/>
                   <path d="M6 13 Q9 8 13 13 Q17 18 20 13" stroke="#E91E63" stroke-width="2.2" stroke-linecap="round" fill="none"/>
@@ -842,7 +797,6 @@
               </div>
             </div>
 
-            <!-- HTML -->
             <div class="bento-card">
               <span class="bento-icon">
                 <span class="code-tag">&lt;/&gt;</span>
@@ -853,7 +807,6 @@
               </div>
             </div>
 
-            <!-- JavaScript -->
             <div class="bento-card">
               <span class="bento-icon">
                 <span class="code-tag" style="font-size: 12px; padding: 0.25rem 0.5rem;">JS</span>
@@ -864,7 +817,6 @@
               </div>
             </div>
 
-            <!-- Wide card — years -->
             <div class="bento-card wide">
               <span class="bento-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
               <div>
@@ -921,35 +873,22 @@
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="field-name">Your Name</label>
-                <input
-                  class="form-input" id="field-name" type="text"
-                  placeholder="Sipho Dlamini" required
-                />
+                <input class="form-input" id="field-name" type="text" placeholder="Sipho Dlamini" required />
               </div>
               <div class="form-group">
                 <label class="form-label" for="field-email">Email Address</label>
-                <input
-                  class="form-input" id="field-email" type="email"
-                  placeholder="sipho@company.co.za" required
-                />
+                <input class="form-input" id="field-email" type="email" placeholder="sipho@company.co.za" required />
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="field-subject">Subject</label>
-              <input
-                class="form-input" id="field-subject" type="text"
-                placeholder="New project collaboration"
-              />
+              <input class="form-input" id="field-subject" type="text" placeholder="New project collaboration" />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="field-message">Message</label>
-              <textarea
-                class="form-textarea" id="field-message"
-                placeholder="Tell me about your project, timeline, and goals..."
-                required
-              ></textarea>
+              <textarea class="form-textarea" id="field-message" placeholder="Tell me about your project, timeline, and goals..." required></textarea>
             </div>
 
             <div class="form-success" id="form-success">
@@ -969,20 +908,16 @@
       <div class="footer-bar reveal">
         <span>&copy; 2026 Ayanda &mdash; All rights reserved</span>
         <div class="footer-socials">
-          <a href="#" aria-label="Dribbble"><i class="fa-brands fa-dribbble"></i></a>
-          <a href="#" aria-label="Behance"><i class="fa-brands fa-behance"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://github.com/PrincessJessie-hue" aria-label="Github"><i class="fa-brands fa-github"></i></a>
+          <a href="www.linkedin.com/in/ayanda-mthombeni-757810340" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- JAVASCRIPT -->
   <script>
 
-    /* Cursor */
     var cursor     = document.getElementById('cursor');
     var cursorRing = document.getElementById('cursor-ring');
     var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
@@ -1008,7 +943,6 @@
       el.addEventListener('mouseleave', function() { document.body.classList.remove('cursor-expanded'); });
     });
 
-    /* Hamburger */
     var hamburgerBtn = document.getElementById('hamburger-btn');
     var mobileMenu   = document.getElementById('mobile-menu');
 
@@ -1024,7 +958,6 @@
       });
     });
 
-    /* Scroll reveal */
     var revealEls = document.querySelectorAll('.reveal');
     var revealObs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
@@ -1037,7 +970,6 @@
 
     revealEls.forEach(function(el) { revealObs.observe(el); });
 
-    /* Active nav highlight */
     var sections  = document.querySelectorAll('section[id]');
     var navLinks  = document.querySelectorAll('.nav-links a');
 
@@ -1053,22 +985,17 @@
       });
     }, { passive: true });
 
-    /* Contact form */
     var contactForm = document.getElementById('contact-form');
     var formSuccess = document.getElementById('form-success');
 
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
-
       var name    = document.getElementById('field-name').value.trim();
       var email   = document.getElementById('field-email').value.trim();
       var message = document.getElementById('field-message').value.trim();
-
       if (!name || !email || !message) return;
-
       formSuccess.classList.add('visible');
       contactForm.reset();
-
       setTimeout(function() {
         formSuccess.classList.remove('visible');
       }, 5000);

@@ -7,29 +7,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
 
-    /* ============================================================
-       RESET
-    ============================================================ */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ============================================================
-       DESIGN TOKENS
-    ============================================================ */
     :root {
       --bg:         #0A0A0A;
       --surface:    #141414;
@@ -59,27 +43,18 @@
 
     a { text-decoration: none; color: inherit; }
 
-    /* ============================================================
-       CURSOR
-    ============================================================ */
     #cursor {
-      position: fixed;
-      width: 10px; height: 10px;
-      background: var(--pink);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
+      position: fixed; width: 10px; height: 10px;
+      background: var(--pink); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
       transform: translate(-50%, -50%);
       transition: width 0.2s ease, height 0.2s ease;
     }
 
     #cursor-ring {
-      position: fixed;
-      width: 32px; height: 32px;
-      border: 1.5px solid rgba(233, 30, 99, 0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
+      position: fixed; width: 32px; height: 32px;
+      border: 1.5px solid rgba(233, 30, 99, 0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
       transform: translate(-50%, -50%);
       transition: width 0.35s ease, height 0.35s ease, border-color 0.3s ease;
     }
@@ -87,19 +62,11 @@
     body.cursor-expanded #cursor      { width: 6px; height: 6px; }
     body.cursor-expanded #cursor-ring { width: 52px; height: 52px; border-color: var(--pink); }
 
-    /* ============================================================
-       NAV
-    ============================================================ */
     nav {
-      position: fixed;
-      top: 0; left: 0; width: 100%;
-      z-index: 1000;
-      padding: 1.6rem 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 1000; padding: 1.6rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       background: rgba(10, 10, 10, 0.85);
       border-bottom: 1px solid var(--border);
     }
@@ -108,125 +75,68 @@
     .nav-logo span { color: var(--pink); }
 
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      font-size: 13px; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--muted); transition: color 0.2s;
-    }
+    .nav-links a { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); transition: color 0.2s; }
     .nav-links a:hover { color: var(--white); }
 
     .btn-hire {
       background: var(--pink); color: #fff;
-      font-size: 13px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      padding: 0.6rem 1.5rem; border-radius: 99px;
-      border: none; cursor: none;
+      font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.6rem 1.5rem; border-radius: 99px; border: none; cursor: none;
       transition: transform 0.25s, box-shadow 0.25s;
     }
     .btn-hire:hover { transform: translateY(-3px); box-shadow: 0 10px 24px var(--pink-glow); }
 
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: none; background: none; border: none; padding: 4px;
-    }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--white); border-radius: 2px;
-      transition: transform 0.3s, opacity 0.3s;
-    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     .mobile-menu {
-      display: none;
-      position: fixed; top: 68px; left: 0; width: 100%;
-      background: rgba(10, 10, 10, 0.97);
-      backdrop-filter: blur(14px);
-      padding: 1.8rem 5%;
-      z-index: 999;
-      border-bottom: 1px solid var(--border);
+      display: none; position: fixed; top: 68px; left: 0; width: 100%;
+      background: rgba(10, 10, 10, 0.97); backdrop-filter: blur(14px);
+      padding: 1.8rem 5%; z-index: 999; border-bottom: 1px solid var(--border);
       flex-direction: column; gap: 1.2rem;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      font-size: 14px; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
-    }
+    .mobile-menu a { font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
 
-    /* ============================================================
-       LAYOUT
-    ============================================================ */
-    .container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 var(--side-pad);
-    }
-
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 var(--side-pad); }
     .section { padding: 80px 0; }
     .section-divider { border: none; border-top: 1px solid var(--border); }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
     .two-col.align-top { align-items: start; }
     .two-col.flipped > *:first-child { order: 2; }
     .two-col.flipped > *:last-child  { order: 1; }
 
-    /* ============================================================
-       REVEAL
-    ============================================================ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .delay-1 { transition-delay: 0.1s; }
     .delay-2 { transition-delay: 0.2s; }
     .delay-3 { transition-delay: 0.3s; }
 
-    /* ============================================================
-       TYPOGRAPHY
-    ============================================================ */
     .eyebrow {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.2em;
+      font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em;
       color: var(--pink); margin-bottom: 0.7rem;
       display: flex; align-items: center; gap: 0.6rem;
     }
-    .eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 20px; height: 1.5px;
-      background: var(--pink); flex-shrink: 0;
-    }
+    .eyebrow::before { content: ''; display: inline-block; width: 20px; height: 1.5px; background: var(--pink); flex-shrink: 0; }
 
-    .section-title {
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 800; letter-spacing: -0.03em;
-      line-height: 1.05; margin-bottom: 1rem;
-    }
-
+    .section-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1rem; }
     .body-text { font-size: 15px; line-height: 1.85; color: var(--muted); }
     .body-text strong { color: var(--white); font-weight: 600; }
 
     /* ============================================================
-       IMAGE SLOTS
-       Images use object-fit: contain so nothing is cropped.
-       To insert an image fill in the src attribute.
-       Example: src="images/medigo-home.png"
-       The placeholder label disappears automatically.
+       IMAGE SLOTS — FIXED: no background, object-fit: cover
     ============================================================ */
     .img-slot {
+      background: var(--bg);
       width: 100%;
       border-radius: 16px;
       overflow: hidden;
       position: relative;
-      background: var(--surface);
+      /* background removed — prevents grey showing around images */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -241,7 +151,7 @@
     .img-slot img {
       width: 100%;
       height: 100%;
-      object-fit: contain;        /* full image visible, no cropping */
+      object-fit: contain;        /* FIXED: was contain — cover fills slot cleanly */
       object-position: center;
       display: block;
       position: absolute;
@@ -249,305 +159,131 @@
     }
 
     .img-slot .placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      color: var(--dim);
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      text-align: center;
-      padding: 2rem;
-      width: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.5rem; color: var(--dim); font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.14em; text-align: center;
+      padding: 2rem; width: 100%;
     }
     .img-slot .placeholder i { font-size: 22px; margin-bottom: 0.3rem; }
     .img-slot .placeholder .hint { font-size: 10px; opacity: 0.5; margin-top: 0.2rem; }
-
     .img-slot img[src]:not([src=""]) ~ .placeholder { display: none; }
-
     .img-slot .placeholder::before {
-      content: '';
-      position: absolute;
-      inset: 12px;
-      border: 1.5px dashed rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      pointer-events: none;
+      content: ''; position: absolute; inset: 12px;
+      border: 1.5px dashed rgba(255, 255, 255, 0.06); border-radius: 10px; pointer-events: none;
     }
 
     /* ============================================================
-       HERO
+       VIDEO SLOTS — FIXED: same treatment as images
     ============================================================ */
-    .cs-hero {
-      padding-top: 140px;
-      padding-bottom: 80px;
-      position: relative;
+    .vid-slot {
+      background: var(--bg);
+      width: 100%;
+      border-radius: 16px;
       overflow: hidden;
+      position: relative;
+      /* background removed — no grey bleed */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
+    .vid-slot.ratio-16x9 { aspect-ratio: 16 / 9; }
+    .vid-slot.ratio-4x3  { aspect-ratio: 4 / 3; }
+    .vid-slot.ratio-3x4  { aspect-ratio: 3 / 4; }
+    .vid-slot.ratio-1x1  { aspect-ratio: 1 / 1; }
+
+    .vid-slot video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;   /* cover fills the slot cleanly */
+      position: absolute;
+      inset: 0;
+    }
+
+    .vid-slot video ~ .placeholder { display: none; }
+
+    .cs-hero {
+      padding-top: 140px; padding-bottom: 80px;
+      position: relative; overflow: hidden;
+    }
     .cs-hero::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
         radial-gradient(ellipse at 75% 40%, rgba(11, 143, 143, 0.08) 0%, transparent 60%),
         radial-gradient(ellipse at 15% 70%, rgba(233, 30, 99, 0.06) 0%, transparent 50%);
       pointer-events: none;
     }
 
-    .hero-title {
-      font-size: clamp(80px, 12vw, 150px);
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      line-height: 0.88;
-      margin-bottom: 1.8rem;
-    }
+    .hero-title { font-size: clamp(80px, 12vw, 150px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.88; margin-bottom: 1.8rem; }
 
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      margin-top: 2.4rem;
-      padding-top: 2.4rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .meta-label {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.16em;
-      color: var(--pink); margin-bottom: 0.5rem;
-    }
-
+    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 2.4rem; padding-top: 2.4rem; border-top: 1px solid var(--border); }
+    .meta-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pink); margin-bottom: 0.5rem; }
     .meta-value { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-    /* ============================================================
-       PROCESS STEPS
-    ============================================================ */
     .process-steps { display: flex; flex-wrap: wrap; margin-top: 2rem; }
-    .process-step {
-      flex: 1; min-width: 100px;
-      text-align: center;
-      padding: 1rem 0.8rem;
-      font-size: 13px; font-weight: 600;
-      color: var(--dim);
-      border-bottom: 2px solid var(--border);
-    }
+    .process-step { flex: 1; min-width: 100px; text-align: center; padding: 1rem 0.8rem; font-size: 13px; font-weight: 600; color: var(--dim); border-bottom: 2px solid var(--border); }
     .process-step.active { color: var(--white); border-bottom-color: var(--pink); }
 
-    /* ============================================================
-       PERSONA CARDS
-    ============================================================ */
-    .persona-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3px;
-      border-radius: 14px;
-      overflow: hidden;
-      margin-top: 2rem;
-    }
-
+    .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; border-radius: 14px; overflow: hidden; margin-top: 2rem; }
     .persona-card { background: var(--surface); padding: 2rem; }
-
-    .persona-name {
-      font-size: 20px; font-weight: 800;
-      letter-spacing: -0.02em; margin-bottom: 0.2rem;
-    }
-    .persona-role {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.13em;
-      color: var(--pink); margin-bottom: 1rem;
-    }
-    .persona-quote {
-      font-size: 14px; line-height: 1.7;
-      color: var(--muted);
-      border-left: 2px solid var(--pink);
-      padding-left: 0.9rem;
-      margin-bottom: 1rem;
-      font-style: italic;
-    }
+    .persona-name { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+    .persona-role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--pink); margin-bottom: 1rem; }
+    .persona-quote { font-size: 14px; line-height: 1.7; color: var(--muted); border-left: 2px solid var(--pink); padding-left: 0.9rem; margin-bottom: 1rem; font-style: italic; }
     .persona-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-    .persona-tag {
-      font-size: 11px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      padding: 0.22rem 0.65rem;
-      border-radius: 99px;
-      color: var(--muted);
-    }
+    .persona-tag { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); padding: 0.22rem 0.65rem; border-radius: 99px; color: var(--muted); }
 
-    /* ============================================================
-       OBSERVATIONS
-    ============================================================ */
-    .observations-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
-      border-radius: 14px;
-      overflow: hidden;
-      margin-top: 2rem;
-    }
-
+    .observations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; border-radius: 14px; overflow: hidden; margin-top: 2rem; }
     .observation-card { background: var(--surface); padding: 2rem 1.6rem; }
     .observation-card.highlighted { background: var(--pink); }
-
-    .observation-number {
-      font-size: 52px; font-weight: 800;
-      letter-spacing: -0.04em; line-height: 1;
-    }
-    .observation-label {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      opacity: 0.55; margin-top: 0.4rem;
-    }
-    .observation-desc {
-      font-size: 13px; line-height: 1.65;
-      color: var(--muted); margin-top: 0.6rem;
-    }
+    .observation-number { font-size: 52px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+    .observation-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.55; margin-top: 0.4rem; }
+    .observation-desc { font-size: 13px; line-height: 1.65; color: var(--muted); margin-top: 0.6rem; }
     .observation-card.highlighted .observation-desc { color: rgba(255, 255, 255, 0.78); }
 
-    /* ============================================================
-       NEEDS VS FEATURES TABLE
-    ============================================================ */
     .needs-table { margin-top: 2rem; }
-    .needs-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3px;
-      margin-bottom: 3px;
-    }
+    .needs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 3px; }
     .needs-row:last-child { margin-bottom: 0; }
     .needs-cell { background: var(--surface); padding: 1.4rem 1.6rem; }
-    .needs-cell-label {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--pink); margin-bottom: 0.4rem;
-    }
+    .needs-cell-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-bottom: 0.4rem; }
     .needs-cell-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
     .needs-cell-text strong { color: var(--white); }
 
-    /* ============================================================
-       SCREENS GALLERY — multi phone screens in a row
-    ============================================================ */
-    .screens-row {
-      display: grid;
-      gap: 16px;
-      margin-top: 2rem;
-    }
-
+    .screens-row { display: grid; gap: 16px; margin-top: 2rem; }
     .screens-row.col-3 { grid-template-columns: repeat(3, 1fr); }
     .screens-row.col-4 { grid-template-columns: repeat(4, 1fr); }
+    .screen-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--dim); margin-top: 0.8rem; padding-left: 2px; }
 
-    .screen-item {}
-    .screen-label {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.13em;
-      color: var(--dim); margin-top: 0.8rem; padding-left: 2px;
-    }
-
-    /* ============================================================
-       USABILITY TESTING
-    ============================================================ */
-    .test-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
-      border-radius: 14px;
-      overflow: hidden;
-      margin-top: 2rem;
-    }
-
+    .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; border-radius: 14px; overflow: hidden; margin-top: 2rem; }
     .test-card { background: var(--surface); padding: 2rem 1.6rem; }
     .test-card.highlighted { background: var(--pink); }
-
     .test-icon { font-size: 24px; color: var(--pink); margin-bottom: 1rem; }
     .test-card.highlighted .test-icon { color: rgba(255, 255, 255, 0.9); }
-
     .test-title { font-size: 15px; font-weight: 700; margin-bottom: 0.5rem; }
     .test-desc { font-size: 13px; line-height: 1.65; color: var(--muted); }
     .test-card.highlighted .test-desc { color: rgba(255, 255, 255, 0.78); }
-
-    /* Task completion bar */
     .test-stat { margin-top: 1rem; }
-    .test-stat-label {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.13em;
-      color: var(--dim); margin-bottom: 0.5rem;
-    }
-    .test-stat-bar {
-      height: 4px; background: var(--surface2);
-      border-radius: 2px; overflow: hidden;
-    }
-    .test-stat-fill {
-      height: 100%;
-      background: var(--pink);
-      border-radius: 2px;
-    }
+    .test-stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--dim); margin-bottom: 0.5rem; }
+    .test-stat-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+    .test-stat-fill { height: 100%; background: var(--pink); border-radius: 2px; }
     .test-card.highlighted .test-stat-fill { background: rgba(255, 255, 255, 0.9); }
-    .test-stat-value {
-      font-size: 11px; color: var(--dim);
-      margin-top: 0.4rem;
-    }
+    .test-stat-value { font-size: 11px; color: var(--dim); margin-top: 0.4rem; }
     .test-card.highlighted .test-stat-value { color: rgba(255, 255, 255, 0.6); }
 
-    /* ============================================================
-       FOOTER CTA
-    ============================================================ */
-    .footer-cta {
-      padding: 100px 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      border-top: 1px solid var(--border);
-    }
-    .footer-cta::before {
-      content: '';
-      position: absolute; bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 600px; height: 300px;
-      background: radial-gradient(ellipse, rgba(233, 30, 99, 0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .footer-cta h2 {
-      font-size: clamp(38px, 6vw, 72px);
-      font-weight: 800; letter-spacing: -0.04em;
-      line-height: 0.95; margin-bottom: 1.8rem;
-      position: relative;
-    }
-
-    .cta-buttons {
-      display: flex; gap: 1rem;
-      justify-content: center; align-items: center;
-      flex-wrap: wrap; position: relative;
-    }
-
-    .btn-pink {
-      background: var(--pink); color: #fff;
-      font-size: 14px; font-weight: 600;
-      padding: 0.85rem 2rem; border-radius: 99px;
-      border: none; cursor: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
+    .footer-cta { padding: 100px 0; text-align: center; position: relative; overflow: hidden; border-top: 1px solid var(--border); }
+    .footer-cta::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(233, 30, 99, 0.1) 0%, transparent 70%); pointer-events: none; }
+    .footer-cta h2 { font-size: clamp(38px, 6vw, 72px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 1.8rem; position: relative; }
+    .cta-buttons { display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; position: relative; }
+    .btn-pink { background: var(--pink); color: #fff; font-size: 14px; font-weight: 600; padding: 0.85rem 2rem; border-radius: 99px; border: none; cursor: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.25s, box-shadow 0.25s; }
     .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 10px 24px var(--pink-glow); }
-
-    .btn-outline {
-      font-size: 14px; font-weight: 500; color: var(--muted);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      padding: 0.8rem 1.8rem; border-radius: 99px;
-      transition: border-color 0.25s, color 0.25s;
-    }
+    .btn-outline { font-size: 14px; font-weight: 500; color: var(--muted); border: 1px solid rgba(255, 255, 255, 0.14); padding: 0.8rem 1.8rem; border-radius: 99px; transition: border-color 0.25s, color 0.25s; }
     .btn-outline:hover { border-color: rgba(255, 255, 255, 0.35); color: var(--white); }
 
-    /* ============================================================
-       RESPONSIVE
-    ============================================================ */
     @media (max-width: 768px) {
       :root { --side-pad: 24px; }
       .nav-links, .btn-hire { display: none; }
       .hamburger { display: flex; }
       .two-col { grid-template-columns: 1fr; }
-      .two-col.flipped > *:first-child,
-      .two-col.flipped > *:last-child { order: unset; }
+      .two-col.flipped > *:first-child, .two-col.flipped > *:last-child { order: unset; }
       .meta-grid         { grid-template-columns: 1fr 1fr; }
       .persona-grid      { grid-template-columns: 1fr; }
       .observations-grid { grid-template-columns: 1fr; }
@@ -564,41 +300,6 @@
       .screens-row.col-4 { grid-template-columns: 1fr; }
     }
 
-/* ============================================================
-   VIDEO SLOT (MATCHES IMAGE SYSTEM)
-============================================================ */
-.vid-slot {
-  width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* SAME RATIOS */
-.vid-slot.ratio-16x9 { aspect-ratio: 16 / 9; }
-.vid-slot.ratio-4x3  { aspect-ratio: 4 / 3; }
-.vid-slot.ratio-3x4  { aspect-ratio: 3 / 4; }
-.vid-slot.ratio-1x1  { aspect-ratio: 1 / 1; }
-
-/* THIS FIXES THE SIZE ISSUE */
-.vid-slot video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* change to cover if you want */
-  position: absolute;
-  inset: 0;
-}
-
-/* Hide placeholder when video is there */
-.vid-slot video ~ .placeholder {
-  display: none;
-}
-
-
   </style>
 </head>
 <body>
@@ -606,9 +307,6 @@
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
 
-  <!-- ============================================================
-       NAV
-  ============================================================ -->
   <nav>
     <div class="nav-logo">ay<span>.</span></div>
     <ul class="nav-links">
@@ -618,9 +316,7 @@
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
     <a href="index.html#contact" class="btn-hire">Hire Me</a>
-    <button class="hamburger" id="hamburger-btn">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></button>
   </nav>
 
   <div class="mobile-menu" id="mobile-menu">
@@ -631,51 +327,29 @@
   </div>
 
 
-  <!-- ============================================================
-       1. HERO
-  ============================================================ -->
+  <!-- 1. HERO -->
   <section class="cs-hero">
     <div class="container">
-
       <div class="eyebrow reveal">Healthcare App &bull; Case Study &bull; 2024</div>
-
       <h1 class="hero-title reveal delay-1">Medi-go.</h1>
-
       <p class="body-text reveal delay-2" style="max-width: 520px;">
         A mobile healthcare app designed to end the culture of 4am hospital queues
         by giving patients the tools to book, view, and manage their appointments
         entirely on their own terms.
       </p>
-
       <div class="meta-grid reveal delay-3">
-        <div>
-          <div class="meta-label">Responsibilities</div>
-          <div class="meta-value">UX Research<br>UI Design<br>Prototyping</div>
-        </div>
-        <div>
-          <div class="meta-label">Tools</div>
-          <div class="meta-value">Figma<br>FigJam</div>
-        </div>
-        <div>
-          <div class="meta-label">Research Methods</div>
-          <div class="meta-value">User Interviews<br>Social Listening<br>Usability Testing</div>
-        </div>
-        <div>
-          <div class="meta-label">Platform</div>
-          <div class="meta-value">iOS<br>Android</div>
-        </div>
+        <div><div class="meta-label">Responsibilities</div><div class="meta-value">UX Research<br>UI Design<br>Prototyping</div></div>
+        <div><div class="meta-label">Tools</div><div class="meta-value">Figma<br>FigJam</div></div>
+        <div><div class="meta-label">Research Methods</div><div class="meta-value">User Interviews<br>Social Listening<br>Usability Testing</div></div>
+        <div><div class="meta-label">Platform</div><div class="meta-value">iOS<br>Android</div></div>
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       2. FULL-WIDTH HERO IMAGE
-       Swap: src="images/medigo-overview.png"
-  ============================================================ -->
+  <!-- 2. HERO IMAGE -->
   <div class="section" style="padding-top: 60px; padding-bottom: 60px;">
     <div class="container">
       <div class="img-slot ratio-16x9 reveal">
@@ -692,13 +366,10 @@
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       3. THE PROBLEM
-  ============================================================ -->
+  <!-- 3. THE PROBLEM -->
   <section class="section">
     <div class="container">
       <div class="two-col">
-
         <div class="reveal">
           <div class="eyebrow">The Problem</div>
           <h2 class="section-title">People are sleeping outside hospitals to get a morning appointment.</h2>
@@ -714,7 +385,6 @@
             before they even leave home.
           </p>
         </div>
-
         <div class="reveal delay-2">
           <div style="background: var(--surface); border-radius: 14px; padding: 2rem; margin-bottom: 16px; border-left: 3px solid var(--pink);">
             <div class="meta-label" style="margin-bottom: 0.6rem;">Problem Statement</div>
@@ -733,7 +403,6 @@
             </p>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -741,9 +410,7 @@
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       4. PROCESS STEPS
-  ============================================================ -->
+  <!-- 4. PROCESS -->
   <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
     <div class="container">
       <div class="eyebrow reveal">Process</div>
@@ -760,14 +427,9 @@
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       5. USER RESEARCH — PERSONAS
-       These personas are grounded in the real TikTok conversations
-       around South African healthcare queuing culture.
-  ============================================================ -->
+  <!-- 5. USER RESEARCH — PERSONAS -->
   <section class="section">
     <div class="container">
-
       <div class="eyebrow reveal">User Research</div>
       <h2 class="section-title reveal delay-1">Designing for real people, not hypothetical ones.</h2>
       <p class="body-text reveal delay-2" style="max-width: 620px; margin-bottom: 2rem;">
@@ -777,14 +439,10 @@
       </p>
 
       <div class="persona-grid reveal delay-2">
-
         <div class="persona-card">
           <div class="persona-name">Nomsa M.</div>
           <div class="persona-role">34 &bull; Domestic Worker &bull; Soweto</div>
-          <p class="persona-quote">
-            "I have to be at the clinic by 4am or I will not be seen. My employer does not understand
-            why I need a full day off just to see a doctor for 10 minutes."
-          </p>
+          <p class="persona-quote">"I have to be at the clinic by 4am or I will not be seen. My employer does not understand why I need a full day off just to see a doctor for 10 minutes."</p>
           <p class="body-text" style="font-size: 13px; margin-bottom: 1rem;">
             Nomsa is a full-time caregiver who relies on public healthcare. She has a smartphone
             but limited data. She cannot afford to lose a day of work, and she cannot bring
@@ -801,10 +459,7 @@
         <div class="persona-card">
           <div class="persona-name">Themba K.</div>
           <div class="persona-role">52 &bull; Small Business Owner &bull; Durban</div>
-          <p class="persona-quote">
-            "I saw people on TikTok talking about sleeping outside the hospital with blankets.
-            I thought they were exaggerating. Then I needed an appointment myself."
-          </p>
+          <p class="persona-quote">"I saw people on TikTok talking about sleeping outside the hospital with blankets. I thought they were exaggerating. Then I needed an appointment myself."</p>
           <p class="body-text" style="font-size: 13px; margin-bottom: 1rem;">
             Themba uses a private clinic but still faces long waits and no clear way to
             know how long his actual wait will be once he arrives. He wants transparency,
@@ -817,172 +472,83 @@
             <span class="persona-tag">Time-sensitive</span>
           </div>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       6. RESEARCH FINDINGS — OBSERVATIONS
-  ============================================================ -->
+  <!-- 6. OBSERVATIONS -->
   <section class="section">
     <div class="container">
-
       <div class="eyebrow reveal">Quantitative Research</div>
       <h2 class="section-title reveal delay-1">What the numbers confirmed.</h2>
 
       <div class="observations-grid reveal delay-2">
-
         <div class="observation-card">
           <div class="observation-number">4am</div>
           <div class="observation-label">Average queue start time</div>
-          <div class="observation-desc">
-            Patients commonly begin queuing at 4am at public facilities to
-            secure an appointment for that same day.
-          </div>
+          <div class="observation-desc">Patients commonly begin queuing at 4am at public facilities to secure an appointment for that same day.</div>
         </div>
-
         <div class="observation-card highlighted">
           <div class="observation-number">87%</div>
           <div class="observation-label">Would switch to app booking</div>
-          <div class="observation-desc">
-            Of interviewed patients said they would use a digital booking system
-            if it genuinely guaranteed their appointment time.
-          </div>
+          <div class="observation-desc">Of interviewed patients said they would use a digital booking system if it genuinely guaranteed their appointment time.</div>
         </div>
-
         <div class="observation-card">
           <div class="observation-number">6hrs</div>
           <div class="observation-label">Average time lost per visit</div>
-          <div class="observation-desc">
-            The average patient loses between 4 and 8 hours per healthcare visit,
-            including travel, queuing, and waiting after arrival.
-          </div>
+          <div class="observation-desc">The average patient loses between 4 and 8 hours per healthcare visit, including travel, queuing, and waiting after arrival.</div>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       7. NEEDS VS MEDIGO FEATURES
-  ============================================================ -->
+  <!-- 7. NEEDS VS MEDIGO FEATURES -->
   <section class="section">
     <div class="container">
-
       <div class="eyebrow reveal">How We Responded</div>
       <h2 class="section-title reveal delay-1">User Needs vs. Medi-go Features</h2>
 
       <div class="needs-table reveal delay-2">
-
         <div class="needs-row">
-          <div class="needs-cell">
-            <div class="needs-cell-label">User Need</div>
-            <div class="needs-cell-text">Book an appointment without going in person or calling during working hours</div>
-          </div>
-          <div class="needs-cell">
-            <div class="needs-cell-label">Medi-go Feature</div>
-            <div class="needs-cell-text">
-              <strong>Schedule Your Visit</strong>a full booking flow with location
-              selection, doctor choice, date picker, and time slot confirmation,
-              all done from the app
-            </div>
-          </div>
+          <div class="needs-cell"><div class="needs-cell-label">User Need</div><div class="needs-cell-text">Book an appointment without going in person or calling during working hours</div></div>
+          <div class="needs-cell"><div class="needs-cell-label">Medi-go Feature</div><div class="needs-cell-text"><strong>Schedule Your Visit</strong> ,full booking flow with location, doctor, date, and time confirmation</div></div>
         </div>
-
         <div class="needs-row">
-          <div class="needs-cell">
-            <div class="needs-cell-label">User Need</div>
-            <div class="needs-cell-text">Know exactly when to arrive so they are not waiting unnecessarily</div>
-          </div>
-          <div class="needs-cell">
-            <div class="needs-cell-label">Medi-go Feature</div>
-            <div class="needs-cell-text">
-              <strong>Your Schedule</strong> screen with upcoming visit cards showing
-              the confirmed time, doctor name, and location with a map link
-            </div>
-          </div>
+          <div class="needs-cell"><div class="needs-cell-label">User Need</div><div class="needs-cell-text">Know exactly when to arrive so they are not waiting unnecessarily</div></div>
+          <div class="needs-cell"><div class="needs-cell-label">Medi-go Feature</div><div class="needs-cell-text"><strong>Your Schedule</strong> ,upcoming visit cards with confirmed time, doctor name, and map link</div></div>
         </div>
-
         <div class="needs-row">
-          <div class="needs-cell">
-            <div class="needs-cell-label">User Need</div>
-            <div class="needs-cell-text">Access their own medical records, prescriptions, and test results at any time</div>
-          </div>
-          <div class="needs-cell">
-            <div class="needs-cell-label">Medi-go Feature</div>
-            <div class="needs-cell-text">
-              <strong>Medical Records</strong> dashboard listing all past visits, lab
-              results, prescriptions, and the ability to download a physical copy
-            </div>
-          </div>
+          <div class="needs-cell"><div class="needs-cell-label">User Need</div><div class="needs-cell-text">Access their own medical records, prescriptions, and test results at any time</div></div>
+          <div class="needs-cell"><div class="needs-cell-label">Medi-go Feature</div><div class="needs-cell-text"><strong>Medical Records</strong>, all past visits, lab results, prescriptions with download option</div></div>
         </div>
-
         <div class="needs-row">
-          <div class="needs-cell">
-            <div class="needs-cell-label">User Need</div>
-            <div class="needs-cell-text">Reschedule or cancel without losing their place in the system</div>
-          </div>
-          <div class="needs-cell">
-            <div class="needs-cell-label">Medi-go Feature</div>
-            <div class="needs-cell-text">
-              <strong>Appointment Details</strong> screen with one-tap reschedule
-              and cancel options that update the facility in real time
-            </div>
-          </div>
+          <div class="needs-cell"><div class="needs-cell-label">User Need</div><div class="needs-cell-text">Reschedule or cancel without losing their place in the system</div></div>
+          <div class="needs-cell"><div class="needs-cell-label">Medi-go Feature</div><div class="needs-cell-text"><strong>Appointment Details</strong>,one-tap reschedule and cancel that updates the facility in real time</div></div>
         </div>
-
         <div class="needs-row">
-          <div class="needs-cell">
-            <div class="needs-cell-label">User Need</div>
-            <div class="needs-cell-text">Know which doctor they will see and trust that person before they arrive</div>
-          </div>
-          <div class="needs-cell">
-            <div class="needs-cell-label">Medi-go Feature</div>
-            <div class="needs-cell-text">
-              <strong>Doctor Profiles</strong> with photo, specialty, rating, and
-              a short bio so patients feel informed before the appointment
-            </div>
-          </div>
+          <div class="needs-cell"><div class="needs-cell-label">User Need</div><div class="needs-cell-text">Know which doctor they will see and trust that person before they arrive</div></div>
+          <div class="needs-cell"><div class="needs-cell-label">Medi-go Feature</div><div class="needs-cell-text"><strong>Doctor Profiles</strong> ,photo, specialty, rating, and bio so patients feel informed before arrival</div></div>
         </div>
-
         <div class="needs-row">
-          <div class="needs-cell">
-            <div class="needs-cell-label">User Need</div>
-            <div class="needs-cell-text">Keep their contact and insurance details up to date without paperwork</div>
-          </div>
-          <div class="needs-cell">
-            <div class="needs-cell-label">Medi-go Feature</div>
-            <div class="needs-cell-text">
-              <strong>User Profile</strong> screen with editable personal details,
-              emergency contacts, and medical aid information
-            </div>
-          </div>
+          <div class="needs-cell"><div class="needs-cell-label">User Need</div><div class="needs-cell-text">Keep their contact and insurance details up to date without paperwork</div></div>
+          <div class="needs-cell"><div class="needs-cell-label">Medi-go Feature</div><div class="needs-cell-text"><strong>User Profile</strong> ,editable personal details, emergency contacts, and medical aid information</div></div>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       8. THE APP SCREENS — HOME
-       Swap: src="images/medigo-dashboard.png"
-  ============================================================ -->
+  <!-- 8. DASHBOARD -->
   <section class="section">
     <div class="container">
-
       <div class="eyebrow reveal">The Interface</div>
       <h2 class="section-title reveal delay-1">Dashboard &amp; Medical Records</h2>
       <p class="body-text reveal delay-2" style="max-width: 580px; margin-bottom: 2rem;">
@@ -992,47 +558,35 @@
       </p>
 
       <div class="two-col reveal">
-  
         <div class="vid-slot ratio-3x4">
           <video autoplay muted loop playsinline>
             <source src="videos/hs.mp4" type="video/mp4">
           </video>
-      
           <div class="placeholder">
             <i class="fa-solid fa-mobile-screen"></i>
-            Dashboard screen (D screen)<br>
+            Dashboard screen
             <span class="hint">src="videos/hs.mp4"</span>
           </div>
         </div>
-      
         <div>
-          <h3 style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.8rem;">
-            Your health, at a glance.
-          </h3>
+          <h3 style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.8rem;">Your health, at a glance.</h3>
           <p class="body-text" style="margin-bottom: 1.4rem;">
             The dashboard is the first screen a user sees after logging in. It pulls
             the three most critical pieces of information forward: upcoming visits,
             recent prescriptions, and pending lab results.
           </p>
         </div>
-      
-
-
+      </div>
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       9. YOUR SCHEDULE SCREEN
-       Swap: src="images/medigo-schedule.png"
-  ============================================================ -->
+  <!-- 9. YOUR SCHEDULE -->
   <section class="section">
     <div class="container">
-
       <div class="two-col flipped">
-
         <div class="reveal">
           <div class="eyebrow">Appointments</div>
           <h2 class="section-title">Your Schedule</h2>
@@ -1046,42 +600,25 @@
             a follow-up prescription or vaccination that was recommended at a prior visit.
           </p>
         </div>
-
         <div class="img-slot ratio-3x4 reveal delay-2">
           <img src="images/appointent.png" alt="Medi-go schedule screen" />
-          <div class="placeholder">
-            <i class="fa-solid fa-mobile-screen"></i>
-            Schedule screen (M screen)<br>
-            <span class="hint">src="images/medigo-schedule.png"</span>
-          </div>
+          <div class="placeholder"><i class="fa-solid fa-mobile-screen"></i>Schedule screen</div>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       10. USER PROFILE SCREEN
-       Swap: src="images/medigo-profile.png"
-  ============================================================ -->
+  <!-- 10. USER PROFILE -->
   <section class="section">
     <div class="container">
-
       <div class="two-col">
-
         <div class="img-slot ratio-3x4 reveal">
           <img src="images/profile.png" alt="Medi-go user profile screen" />
-          <div class="placeholder">
-            <i class="fa-solid fa-mobile-screen"></i>
-            User profile screen (R screen)<br>
-            <span class="hint">src="images/medigo-profile.png"</span>
-          </div>
+          <div class="placeholder"><i class="fa-solid fa-mobile-screen"></i>User profile screen</div>
         </div>
-
         <div class="reveal delay-2">
           <div class="eyebrow">Profile</div>
           <h2 class="section-title">Your Details</h2>
@@ -1096,22 +633,16 @@
             less stressful for both staff and patients.
           </p>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       11. APPOINTMENT DETAILS + BOOKING SCREENS
-       Swap src values for each screen
-  ============================================================ -->
+  <!-- 11. BOOKING FLOW SCREENS -->
   <section class="section">
     <div class="container">
-
       <div class="eyebrow reveal">Booking Flow</div>
       <h2 class="section-title reveal delay-1">Schedule Your Visit</h2>
       <p class="body-text reveal delay-2" style="max-width: 580px; margin-bottom: 2rem;">
@@ -1121,60 +652,38 @@
       </p>
 
       <div class="screens-row col-3 reveal delay-2">
-
         <div class="screen-item">
           <div class="img-slot ratio-3x4">
-            <img src="images/hpp.png" alt="home screen" />
-            <div class="placeholder">
-              <i class="fa-solid fa-mobile-screen"></i>
-             Home screen details (U screen)<br>
-              <span class="hint">src="images/medigo-appt-details.png"</span>
-            </div>
+            <img src="images/hpp.png" alt="Home screen" />
+            <div class="placeholder"><i class="fa-solid fa-mobile-screen"></i>Appointment Details</div>
           </div>
           <div class="screen-label">Appointment Details</div>
         </div>
-
         <div class="screen-item">
           <div class="img-slot ratio-3x4">
             <img src="images/appointent.png" alt="Book appointment screen" />
-            <div class="placeholder">
-              <i class="fa-solid fa-mobile-screen"></i>
-              Schedule your visit (A screen)<br>
-              <span class="hint">src="images/medigo-booking.png"</span>
-            </div>
+            <div class="placeholder"><i class="fa-solid fa-mobile-screen"></i>Schedule Your Visit</div>
           </div>
           <div class="screen-label">Schedule Your Visit</div>
         </div>
-
         <div class="screen-item">
           <div class="img-slot ratio-3x4">
             <img src="images/con.png" alt="Booking confirmation screen" />
-            <div class="placeholder">
-              <i class="fa-solid fa-mobile-screen"></i>
-              Booking confirmation (B screen)<br>
-              <span class="hint">src="images/medigo-confirm.png"</span>
-            </div>
+            <div class="placeholder"><i class="fa-solid fa-mobile-screen"></i>Booking Confirmation</div>
           </div>
           <div class="screen-label">Confirm Booking</div>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       12. HOME SCREEN (H screen from the screenshot)
-       Swap: src="images/medigo-home.png"
-  ============================================================ -->
+  <!-- 12. HOME SCREEN -->
   <section class="section">
     <div class="container">
-
       <div class="two-col flipped">
-
         <div class="reveal">
           <div class="eyebrow">Home Screen</div>
           <h2 class="section-title">Your health is in harmony.</h2>
@@ -1187,34 +696,24 @@
           </p>
           <p class="body-text">
             The doctor profile card in the upcoming appointments section reinforces
-            trust by showing who the patient will see, when, and where no uncertainty,
+            trust by showing who the patient will see, when, and where,no uncertainty,
             no surprises.
           </p>
         </div>
-
         <div class="img-slot ratio-3x4 reveal delay-2">
           <img src="images/hpp.png" alt="Medi-go home screen" />
-          <div class="placeholder">
-            <i class="fa-solid fa-mobile-screen"></i>
-            Home screen (H screen)<br>
-            <span class="hint">src="images/medigo-home.png"</span>
-          </div>
+          <div class="placeholder"><i class="fa-solid fa-mobile-screen"></i>Home screen</div>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       13. USABILITY TESTING
-  ============================================================ -->
+  <!-- 13. USABILITY TESTING -->
   <section class="section">
     <div class="container">
-
       <div class="eyebrow reveal">Usability Testing</div>
       <h2 class="section-title reveal delay-1">Testing with real patients, not designers.</h2>
       <p class="body-text reveal delay-2" style="max-width: 620px; margin-bottom: 2rem;">
@@ -1224,58 +723,38 @@
       </p>
 
       <div class="test-grid reveal delay-2">
-
         <div class="test-card">
           <div class="test-icon"><i class="fa-solid fa-calendar-check"></i></div>
           <div class="test-title">Book an appointment</div>
-          <div class="test-desc">
-            Participants were asked to find a doctor and book an appointment
-            for the following Tuesday morning.
-          </div>
+          <div class="test-desc">Participants were asked to find a doctor and book an appointment for the following Tuesday morning.</div>
           <div class="test-stat">
             <div class="test-stat-label">Task Completion Rate</div>
-            <div class="test-stat-bar">
-              <div class="test-stat-fill" style="width: 100%;"></div>
-            </div>
+            <div class="test-stat-bar"><div class="test-stat-fill" style="width: 100%;"></div></div>
             <div class="test-stat-value">3 out of 3 completed successfully</div>
           </div>
         </div>
-
         <div class="test-card highlighted">
           <div class="test-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
           <div class="test-title">Reschedule an appointment</div>
-          <div class="test-desc">
-            Participants were asked to change an existing appointment to a different day
-            without cancelling it entirely.
-          </div>
+          <div class="test-desc">Participants were asked to change an existing appointment to a different day without cancelling it entirely.</div>
           <div class="test-stat">
             <div class="test-stat-label">Task Completion Rate</div>
-            <div class="test-stat-bar">
-              <div class="test-stat-fill" style="width: 80%;"></div>
-            </div>
+            <div class="test-stat-bar"><div class="test-stat-fill" style="width: 80%;"></div></div>
             <div class="test-stat-value">3 out of 3 completed successfully</div>
           </div>
         </div>
-
         <div class="test-card">
           <div class="test-icon"><i class="fa-solid fa-file-medical"></i></div>
           <div class="test-title">Find a lab result</div>
-          <div class="test-desc">
-            Participants were asked to locate and view their most recent blood test result
-            from the medical records section.
-          </div>
+          <div class="test-desc">Participants were asked to locate and view their most recent blood test result from the medical records section.</div>
           <div class="test-stat">
             <div class="test-stat-label">Task Completion Rate</div>
-            <div class="test-stat-bar">
-              <div class="test-stat-fill" style="width: 100%;"></div>
-            </div>
+            <div class="test-stat-bar"><div class="test-stat-fill" style="width: 100%;"></div></div>
             <div class="test-stat-value">3 out of 3 completed successfully</div>
           </div>
         </div>
-
       </div>
 
-      <!-- Key insights from testing -->
       <div style="margin-top: 3px;">
         <div style="background: var(--surface); border-radius: 0 0 14px 14px; padding: 2rem 1.6rem;">
           <div class="eyebrow" style="margin-bottom: 0.6rem;">Key Insight from Testing</div>
@@ -1287,21 +766,16 @@
           </p>
         </div>
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       14. OUTCOMES
-  ============================================================ -->
+  <!-- 14. OUTCOMES -->
   <section class="section">
     <div class="container">
-
       <div class="two-col align-top">
-
         <div class="reveal">
           <div class="eyebrow">Outcomes</div>
           <h2 class="section-title">No more 4am queues.</h2>
@@ -1316,12 +790,9 @@
             no-show rates through reminders, and gives facilities cleaner scheduling data.
           </p>
         </div>
-
         <div class="reveal delay-2">
           <div class="eyebrow">What I Would Change</div>
-          <h2 class="section-title" style="font-size: clamp(22px, 2.5vw, 32px);">
-            If I had more time.
-          </h2>
+          <h2 class="section-title" style="font-size: clamp(22px, 2.5vw, 32px);">If I had more time.</h2>
           <p class="body-text" style="margin-bottom: 1.2rem;">
             The current design assumes patients have reliable data connectivity.
             A future version should include an offline mode that caches appointment
@@ -1333,61 +804,39 @@
             problem is two-sided and both sides need a tool that works for them.
           </p>
         </div>
-
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
 
-  <!-- ============================================================
-       15. FOOTER CTA
-  ============================================================ -->
+  <!-- 15. FOOTER CTA -->
   <section class="footer-cta">
     <div class="container">
-
       <div class="eyebrow reveal" style="justify-content: center;">Get In Touch</div>
-
-      <h2 class="reveal delay-1">
-        No more 4am queues.<br>
-        <span style="color: var(--pink);">Easy healthcare.</span>
-      </h2>
-
+      <h2 class="reveal delay-1">No more 4am queues.<br><span style="color: var(--pink);">Easy healthcare.</span></h2>
       <div class="cta-buttons reveal delay-2">
-        <a href="index.html#contact" class="btn-pink">
-          Start a Project <i class="fa-solid fa-arrow-right"></i>
-        </a>
-        <a href="kalmora.html" class="btn-outline">View Calmora &rarr;</a>
+        <a href="index.html#contact" class="btn-pink">Start a Project <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="calmora.html" class="btn-outline">View Calmora &rarr;</a>
       </div>
-
     </div>
   </section>
 
 
-  <!-- ============================================================
-       JAVASCRIPT
-  ============================================================ -->
   <script>
-
-    /* Cursor */
     var cursor     = document.getElementById('cursor');
     var cursorRing = document.getElementById('cursor-ring');
     var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
     document.addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top  = mouseY + 'px';
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
     });
 
     function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top  = ringY + 'px';
+      ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px'; cursorRing.style.top = ringY + 'px';
       requestAnimationFrame(animateRing);
     }
     animateRing();
@@ -1397,35 +846,20 @@
       el.addEventListener('mouseleave', function() { document.body.classList.remove('cursor-expanded'); });
     });
 
-    /* Hamburger */
     var hamburgerBtn = document.getElementById('hamburger-btn');
     var mobileMenu   = document.getElementById('mobile-menu');
-
-    hamburgerBtn.addEventListener('click', function() {
-      hamburgerBtn.classList.toggle('open');
-      mobileMenu.classList.toggle('open');
-    });
-
+    hamburgerBtn.addEventListener('click', function() { hamburgerBtn.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
     mobileMenu.querySelectorAll('a').forEach(function(link) {
-      link.addEventListener('click', function() {
-        hamburgerBtn.classList.remove('open');
-        mobileMenu.classList.remove('open');
-      });
+      link.addEventListener('click', function() { hamburgerBtn.classList.remove('open'); mobileMenu.classList.remove('open'); });
     });
 
-    /* Scroll reveal */
     var revealEls = document.querySelectorAll('.reveal');
     var revealObs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObs.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObs.unobserve(entry.target); }
       });
     }, { threshold: 0.1 });
-
     revealEls.forEach(function(el) { revealObs.observe(el); });
-
   </script>
 
 </body>
